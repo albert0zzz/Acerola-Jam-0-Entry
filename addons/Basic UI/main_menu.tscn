@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbvjcddu3c4k5"]
+
+[ext_resource type="Script" path="res://addons/Basic UI/main_menu.gd" id="1_kh4a1"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kh4a1")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.95
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="PlayButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../ExitButton")
+text = "Play"
+
+[node name="SettingsButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+
+[node name="CreditsButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Credits"
+
+[node name="ExitButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../PlayButton")
+text = "Exit"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CreditsButton" to="." method="_on_credits_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

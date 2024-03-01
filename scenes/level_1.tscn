@@ -1,0 +1,96 @@
+[gd_scene load_steps=12 format=3 uid="uid://beyqutgv0tuy6"]
+
+[ext_resource type="PackedScene" uid="uid://dnisxunjm7m2l" path="res://addons/Godot Modular FPC/player.tscn" id="1_6x1e6"]
+[ext_resource type="Texture2D" uid="uid://d1k8gwsuckb4o" path="res://assets/textures/grids/Dark/texture_07.png" id="2_81nln"]
+[ext_resource type="PackedScene" uid="uid://co2yscvyhngyb" path="res://addons/Basic UI/pause_menu.tscn" id="2_xtyyw"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i72wu"]
+sky_top_color = Color(0.0901961, 0.247059, 0.427451, 1)
+sky_horizon_color = Color(0.282353, 0.458824, 0.788235, 1)
+ground_bottom_color = Color(0.65098, 0.764706, 0.92549, 1)
+ground_horizon_color = Color(0.356863, 0.529412, 0.85098, 1)
+
+[sub_resource type="Sky" id="Sky_ytkpk"]
+sky_material = SubResource("ProceduralSkyMaterial_i72wu")
+
+[sub_resource type="Environment" id="Environment_wlyri"]
+background_mode = 2
+sky = SubResource("Sky_ytkpk")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nt7jw"]
+albedo_texture = ExtResource("2_81nln")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_vu1kr"]
+size = Vector3(0.32, 0.1, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2wx1m"]
+size = Vector3(0.32, 0.1, 0.25)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dwogi"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h7y6s"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="Level_1" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_wlyri")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.819152, 0.496732, -0.286788, 0, 0.5, 0.866025, 0.573576, -0.709407, 0.409576, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Floor" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+collision_mask = 15
+size = Vector3(50, 1, 50)
+material = SubResource("StandardMaterial3D_nt7jw")
+
+[node name="Table" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, -7)
+use_collision = true
+collision_mask = 15
+size = Vector3(2, 0.75, 1)
+
+[node name="Player" parent="." instance=ExtResource("1_6x1e6")]
+Hitbox_Stand_Height = 1.8
+head_height = 1.6
+
+[node name="Book" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0652081, 3.72529e-09, -2.89352)
+collision_layer = 8
+collision_mask = 13
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Book"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+layers = 8
+mesh = SubResource("BoxMesh_vu1kr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Book"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+shape = SubResource("BoxShape3D_2wx1m")
+
+[node name="Cube" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.458714, 1.19209e-07, -3.03075)
+collision_layer = 8
+collision_mask = 13
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cube"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+layers = 8
+mesh = SubResource("BoxMesh_dwogi")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+shape = SubResource("BoxShape3D_h7y6s")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("2_xtyyw")]
