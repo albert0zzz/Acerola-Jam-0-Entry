@@ -32,7 +32,7 @@ var is_zoomed: bool = false
 
 # Internal Variables
 const gravity: float = 9.8
-const lerp_speed: float = 10.0
+const lerp_speed: float = 15.0
 const air_lerp_speed: float = 3.0
 var cur_speed: float = 10.0
 var direction := Vector3.ZERO
@@ -91,6 +91,7 @@ var head_bobbing_cur_intensity: float = 0.0
 
 #region Player Settings
 @export_group("Player Settings")
+@export var throw_power: float = 15.0
 @export var Hitbox_Stand_Height: float = 2.0
 @export var Hitbox_Crouch_Height: float = 1.3
 @export var head_height: float = 1.8
@@ -343,6 +344,8 @@ func handle_movement(input_dir: Vector2, delta: float) -> void:
 
 func handle_pick_n_drop():
 	var collider = ray_hit.get_collider()
+	
+	# Picking mech
 	if collider != null && collider is RigidBody3D && !picked_item:
 		interact_text.visible = true
 		if Input.is_action_just_pressed("Interact_Key"):
@@ -358,22 +361,20 @@ func handle_pick_n_drop():
 			picked_item = true
 	else:
 		interact_text.visible = false
-	if Input.is_action_just_pressed("Drop_Key") && picked_item && ray_hit.is_colliding() && ray_hit.get_collision_normal() == Vector3.UP:
+	
+	# Dropping mech
+	if Input.is_action_just_pressed("Drop_Key") && picked_item:
 		inHandItem.reparent(level)
 		inHandItem.freeze = false
 		inHandItem.get_node("CollisionShape3D").disabled = false
 		inHandItem.get_node("MeshInstance3D").cast_shadow = true
 		hand_collision_shape.disabled = true
-		var drop_pos: Vector3 = (ray_hit.get_collision_point())
-		inHandItem.global_position = drop_pos
-		inHandItem.rotation.x = 0
-		inHandItem.rotation.z = 0
+		var throw_vector := -head.global_transform.basis.z.normalized()
+		inHandItem.apply_central_impulse(throw_vector * throw_power * clamp(velocity.length()/6.0,1,3) +\
+		 Vector3(velocity.x / 4.0, velocity.y / 7.0 + 1.5, velocity.z / 4.0))
 		picked_item = false
 	if picked_item:
-		if ray_hit.get_collision_normal() == Vector3.UP && ray_hit.is_colliding() :
-			drop_text.visible = true
-		else:
-			drop_text.visible = false
+		drop_text.visible = true
 		hand_collision_shape.global_transform = inHandItem.get_node("CollisionShape3D").global_transform
 	else:
 		drop_text.visible = false

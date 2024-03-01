@@ -18,6 +18,11 @@ bg_color = Color(0.117647, 0.694118, 0.294118, 1)
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_o5wto")
+Walk_Speed = 7.0
+Unlimited_Sprint = true
+Sprint_Speed = 11.0
+Jump_Power = 6.0
+throw_power = 7.0
 
 [node name="StandCollisionShape" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -40,11 +45,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
 
 [node name="RayHit" type="RayCast3D" parent="Head/Camera3D"]
 visible = false
-target_position = Vector3(0, 0, -2.5)
+target_position = Vector3(0, 0, -4)
 collision_mask = 13
 
 [node name="PickUpSlot" type="Node3D" parent="Head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.278, -0.289, -0.447)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.738503, -0.734882)
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -109,7 +114,7 @@ offset_right = 55.5
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "Press E to pick up"
+text = "Press LBM to pick up"
 
 [node name="DropText" type="Label" parent="Control"]
 visible = false
@@ -125,4 +130,4 @@ offset_right = 64.0
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "Press G to drop"
+text = "Press RMB to drop"

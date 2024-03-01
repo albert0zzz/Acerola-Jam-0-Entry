@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://beyqutgv0tuy6"]
+[gd_scene load_steps=17 format=3 uid="uid://beyqutgv0tuy6"]
 
 [ext_resource type="PackedScene" uid="uid://dnisxunjm7m2l" path="res://addons/Godot Modular FPC/player.tscn" id="1_6x1e6"]
 [ext_resource type="Texture2D" uid="uid://d1k8gwsuckb4o" path="res://assets/textures/grids/Dark/texture_07.png" id="2_81nln"]
@@ -22,17 +22,38 @@ tonemap_mode = 2
 albedo_texture = ExtResource("2_81nln")
 uv1_triplanar = true
 
-[sub_resource type="BoxMesh" id="BoxMesh_vu1kr"]
-size = Vector3(0.32, 0.1, 0.25)
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_2wx1m"]
-size = Vector3(0.32, 0.1, 0.25)
+size = Vector3(0.55, 0.55, 0.55)
 
-[sub_resource type="BoxMesh" id="BoxMesh_dwogi"]
-size = Vector3(0.1, 0.1, 0.1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sx60t"]
+albedo_color = Color(0.0627451, 0.027451, 0.380392, 1)
+rim = 0.35
+rim_tint = 1.0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_h7y6s"]
-size = Vector3(0.1, 0.1, 0.1)
+[sub_resource type="BoxMesh" id="BoxMesh_t44bx"]
+material = SubResource("StandardMaterial3D_sx60t")
+size = Vector3(0.55, 0.55, 0.55)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lv2od"]
+albedo_color = Color(0.0823529, 0.560784, 0.027451, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3rvy4"]
+material = SubResource("StandardMaterial3D_lv2od")
+size = Vector3(0.55, 0.55, 0.55)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rovqe"]
+albedo_color = Color(0.588235, 0.0235294, 0.0235294, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ixb1q"]
+material = SubResource("StandardMaterial3D_rovqe")
+size = Vector3(0.55, 0.55, 0.55)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sftpd"]
+albedo_color = Color(0.560784, 0.560784, 0.560784, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_vu1kr"]
+material = SubResource("StandardMaterial3D_sftpd")
+size = Vector3(0.55, 0.55, 0.55)
 
 [node name="Level_1" type="Node3D"]
 
@@ -47,7 +68,7 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 use_collision = true
 collision_mask = 15
-size = Vector3(50, 1, 50)
+size = Vector3(1000, 1, 1000)
 material = SubResource("StandardMaterial3D_nt7jw")
 
 [node name="Table" type="CSGBox3D" parent="."]
@@ -60,36 +81,65 @@ size = Vector3(2, 0.75, 1)
 Hitbox_Stand_Height = 1.8
 head_height = 1.6
 
-[node name="Book" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0652081, 3.72529e-09, -2.89352)
+[node name="BlueCube" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.781886, -0.0027523, -3.0068)
 collision_layer = 8
 collision_mask = 13
 metadata/_edit_group_ = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Book"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
-layers = 8
-mesh = SubResource("BoxMesh_vu1kr")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Book"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BlueCube"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000208102, 0.275, 0.000479937)
 shape = SubResource("BoxShape3D_2wx1m")
 
-[node name="Cube" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.458714, 1.19209e-07, -3.03075)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BlueCube"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000208139, 0.275, 0.000479698)
+layers = 8
+mesh = SubResource("BoxMesh_t44bx")
+
+[node name="GreenCube" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.12023, -2.38419e-07, -2.93385)
 collision_layer = 8
 collision_mask = 13
 metadata/_edit_group_ = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Cube"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
-layers = 8
-mesh = SubResource("BoxMesh_dwogi")
-skeleton = NodePath("../..")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GreenCube"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000208102, 0.275, 0.000479937)
+shape = SubResource("BoxShape3D_2wx1m")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
-shape = SubResource("BoxShape3D_h7y6s")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GreenCube"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000208139, 0.275, 0.000479698)
+layers = 8
+mesh = SubResource("BoxMesh_3rvy4")
+
+[node name="RedCube" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.16589, 0, -2.91405)
+collision_layer = 8
+collision_mask = 13
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RedCube"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000208102, 0.275, 0.000479937)
+shape = SubResource("BoxShape3D_2wx1m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RedCube"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00020811, 0.275, 0.000479698)
+layers = 8
+mesh = SubResource("BoxMesh_ixb1q")
+
+[node name="BasicCube" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, 0, -2.894)
+collision_layer = 8
+collision_mask = 13
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BasicCube"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000208102, 0.275, 0.000479937)
+shape = SubResource("BoxShape3D_2wx1m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BasicCube"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000208102, 0.275, 0.000479937)
+layers = 8
+mesh = SubResource("BoxMesh_vu1kr")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
