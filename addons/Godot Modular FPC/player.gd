@@ -117,6 +117,8 @@ var inHandItem: RigidBody3D
 @onready var drop_text: Label = $Control/DropText
 @onready var level: Node3D = $".."
 @onready var hand_collision_shape: CollisionShape3D = $HandCollisionShape
+@onready var hotbar: HBoxContainer = $Control/Hotbar
+
 #endregion
 
 func _ready() -> void:
@@ -225,7 +227,7 @@ func handle_sprint(input_dir: Vector2, delta: float) -> void:
 
 func handle_jump() -> void:
 	# Gets input and calls jump method
-	if Enable_Jump && Input.is_action_just_pressed("Jump_Key") && is_on_floor():
+	if Enable_Jump && Input.is_action_pressed("Jump_Key") && is_on_floor():
 		# Adds force to the player rigidbody to jump
 		velocity.y = Jump_Power
 
@@ -344,9 +346,9 @@ func handle_movement(input_dir: Vector2, delta: float) -> void:
 
 func handle_pick_n_drop():
 	var collider = ray_hit.get_collider()
-	
+
 	# Picking mech
-	if collider != null && collider is RigidBody3D && !picked_item:
+	if collider is Cube: # && !picked_item
 		interact_text.visible = true
 		if Input.is_action_just_pressed("Interact_Key"):
 			inHandItem = ray_hit.get_collider()
@@ -358,6 +360,7 @@ func handle_pick_n_drop():
 			inHandItem.rotation = Vector3.ZERO
 			hand_collision_shape.disabled = false
 			hand_collision_shape.shape = inHandItem.get_node("CollisionShape3D").shape
+			add_item(inHandItem.stats, inHandItem.skill)
 			picked_item = true
 	else:
 		interact_text.visible = false
@@ -378,6 +381,22 @@ func handle_pick_n_drop():
 		hand_collision_shape.global_transform = inHandItem.get_node("CollisionShape3D").global_transform
 	else:
 		drop_text.visible = false
+
+func handle_skill(skill):
+	if skill.name == "Jump Boost":
+		print("Jump Boost")
+	if skill.name == "Dash":
+		print("Dash")
+	if skill.name == "Explosion Boost":
+		print("Explosion Boost")
+	if skill.name == "No Skill":
+		print("No Skill")
+	
+func add_item(stats, skill):
+	hotbar.add_item(stats, skill)
+
+func drop_item(stats, skill):
+	hotbar.drop_item(stats, skill)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:

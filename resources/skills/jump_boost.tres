@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Skill" load_steps=2 format=3 uid="uid://da6rkaci74vqh"]
+
+[ext_resource type="Script" path="res://Skill.gd" id="1_g2bb6"]
+
+[resource]
+script = ExtResource("1_g2bb6")
+name = "Jump Boost"
+description = ""
+cooldown = 4.0

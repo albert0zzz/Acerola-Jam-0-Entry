@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://be4yxcb0201pm"]
+
+[ext_resource type="Script" path="res://Item.gd" id="1_nvtu7"]
+[ext_resource type="Texture2D" uid="uid://cdu5njxg7rxoo" path="res://assets/textures/red.png" id="1_xtajs"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2as5p"]
+albedo_color = Color(0.588235, 0.0235294, 0.0235294, 1)
+
+[resource]
+script = ExtResource("1_nvtu7")
+icon = ExtResource("1_xtajs")
+name = "Explosion Cube"
+color = Color(0.588235, 0.0235294, 0.0235294, 1)
+material = SubResource("StandardMaterial3D_2as5p")
+type = "Skill"
+description = "This cube explodes"

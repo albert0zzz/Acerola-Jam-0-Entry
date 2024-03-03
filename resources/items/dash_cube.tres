@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://cmjntr8pjex33"]
+
+[ext_resource type="Texture2D" uid="uid://bwjic33op4ijh" path="res://assets/textures/green.png" id="1_3poc3"]
+[ext_resource type="Script" path="res://Item.gd" id="1_dt77t"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oqo2x"]
+albedo_color = Color(0.0823529, 0.560784, 0.027451, 1)
+
+[resource]
+script = ExtResource("1_dt77t")
+icon = ExtResource("1_3poc3")
+name = "Dash Cube"
+color = Color(0.0823529, 0.560784, 0.027451, 1)
+material = SubResource("StandardMaterial3D_oqo2x")
+type = "Skill"
+description = "This cube gives ability to dash"

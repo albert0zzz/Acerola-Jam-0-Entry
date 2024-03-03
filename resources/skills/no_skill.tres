@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Skill" load_steps=2 format=3 uid="uid://bilpcjuhm6w78"]
+
+[ext_resource type="Script" path="res://Skill.gd" id="1_hp643"]
+
+[resource]
+script = ExtResource("1_hp643")
+name = "No Skill"
+description = ""
+cooldown = 5.0

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://b1wq7qg3l4uam"]
+
+[ext_resource type="Texture2D" uid="uid://bmcatbp0ovq7n" path="res://assets/textures/white.png" id="1_86wks"]
+[ext_resource type="Script" path="res://Item.gd" id="1_nyahu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xrn4c"]
+albedo_color = Color(0.560784, 0.560784, 0.560784, 1)
+
+[resource]
+script = ExtResource("1_nyahu")
+icon = ExtResource("1_86wks")
+name = "Basic Cube"
+color = Color(0.560784, 0.560784, 0.560784, 1)
+material = SubResource("StandardMaterial3D_xrn4c")
+type = "No Skill"
+description = "A cube that does nothng"

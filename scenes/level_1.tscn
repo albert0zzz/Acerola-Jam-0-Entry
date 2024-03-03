@@ -1,8 +1,17 @@
-[gd_scene load_steps=17 format=3 uid="uid://beyqutgv0tuy6"]
+[gd_scene load_steps=26 format=3 uid="uid://beyqutgv0tuy6"]
 
 [ext_resource type="PackedScene" uid="uid://dnisxunjm7m2l" path="res://addons/Godot Modular FPC/player.tscn" id="1_6x1e6"]
 [ext_resource type="Texture2D" uid="uid://d1k8gwsuckb4o" path="res://assets/textures/grids/Dark/texture_07.png" id="2_81nln"]
 [ext_resource type="PackedScene" uid="uid://co2yscvyhngyb" path="res://addons/Basic UI/pause_menu.tscn" id="2_xtyyw"]
+[ext_resource type="PackedScene" uid="uid://diimwq0v6n0u6" path="res://abstract_item.tscn" id="3_2vu11"]
+[ext_resource type="Resource" uid="uid://b1wq7qg3l4uam" path="res://resources/items/basic_cube.tres" id="4_pnily"]
+[ext_resource type="Resource" uid="uid://bilpcjuhm6w78" path="res://resources/skills/no_skill.tres" id="5_w5dsv"]
+[ext_resource type="Resource" uid="uid://cmjntr8pjex33" path="res://resources/items/dash_cube.tres" id="6_t0ri5"]
+[ext_resource type="Resource" uid="uid://2si8yo6j2raj" path="res://resources/skills/dash.tres" id="7_d5572"]
+[ext_resource type="Resource" uid="uid://be4yxcb0201pm" path="res://resources/items/explosion_cube.tres" id="8_aifw3"]
+[ext_resource type="Resource" uid="uid://ci0pil4myy6bs" path="res://resources/skills/explosion_boost.tres" id="9_rexuo"]
+[ext_resource type="Resource" uid="uid://ct7ipxtfy8f60" path="res://resources/items/jump_cube.tres" id="10_wcoag"]
+[ext_resource type="Resource" uid="uid://da6rkaci74vqh" path="res://resources/skills/jump_boost.tres" id="11_7ok73"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i72wu"]
 sky_top_color = Color(0.0901961, 0.247059, 0.427451, 1)
@@ -76,13 +85,63 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, -7)
 use_collision = true
 collision_mask = 15
 size = Vector3(2, 0.75, 1)
+metadata/_edit_group_ = true
+
+[node name="balling" type="CSGBox3D" parent="Table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.40883, -0.10328)
+use_collision = true
+size = Vector3(0.1, 5.635, 0.1)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Table/balling"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.07583, 0.318323)
+size = Vector3(0.1, 0.1, 0.736646)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Table/balling"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.23792, 0.719603)
+size = Vector3(3.08569, 2.09399, 0.0742188)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Table/balling"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55684, 0.863635)
+size = Vector3(1.37402, 0.0556641, 0.0742188)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Table/balling"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55684, 2.17104)
+size = Vector3(1.37402, 0.0556641, 0.0742188)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Table/balling"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.650333, 1.55684, 1.51629)
+size = Vector3(1.37402, 0.0556641, 0.0742188)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Table/balling"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.627464, 1.55684, 1.51629)
+size = Vector3(1.37402, 0.0556641, 0.0742188)
 
 [node name="Player" parent="." instance=ExtResource("1_6x1e6")]
 Hitbox_Stand_Height = 1.8
 head_height = 1.6
 
+[node name="AbstractItem" parent="." instance=ExtResource("3_2vu11")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.37998)
+stats = ExtResource("4_pnily")
+skill = ExtResource("5_w5dsv")
+
+[node name="AbstractItem2" parent="." instance=ExtResource("3_2vu11")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.57019)
+stats = ExtResource("6_t0ri5")
+skill = ExtResource("7_d5572")
+
+[node name="AbstractItem4" parent="." instance=ExtResource("3_2vu11")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.37428, 0, -2.37998)
+stats = ExtResource("10_wcoag")
+skill = ExtResource("11_7ok73")
+
+[node name="AbstractItem3" parent="." instance=ExtResource("3_2vu11")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.10735, 0, -2.37998)
+stats = ExtResource("8_aifw3")
+skill = ExtResource("9_rexuo")
+
 [node name="BlueCube" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.781886, -0.0027523, -3.0068)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.44464, -0.0027523, -3.0068)
 collision_layer = 8
 collision_mask = 13
 metadata/_edit_group_ = true
@@ -97,7 +156,7 @@ layers = 8
 mesh = SubResource("BoxMesh_t44bx")
 
 [node name="GreenCube" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.12023, -2.38419e-07, -2.93385)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.22473, -2.38419e-07, -2.93385)
 collision_layer = 8
 collision_mask = 13
 metadata/_edit_group_ = true
@@ -112,7 +171,7 @@ layers = 8
 mesh = SubResource("BoxMesh_3rvy4")
 
 [node name="RedCube" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.16589, 0, -2.91405)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.81794, 0, -2.91405)
 collision_layer = 8
 collision_mask = 13
 metadata/_edit_group_ = true
@@ -127,7 +186,7 @@ layers = 8
 mesh = SubResource("BoxMesh_ixb1q")
 
 [node name="BasicCube" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, 0, -2.894)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.88411, 0, -2.894)
 collision_layer = 8
 collision_mask = 13
 metadata/_edit_group_ = true

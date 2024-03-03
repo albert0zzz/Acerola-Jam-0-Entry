@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Item" load_steps=4 format=3 uid="uid://ct7ipxtfy8f60"]
+
+[ext_resource type="Texture2D" uid="uid://cbx1q641qkr8e" path="res://assets/textures/blue.png" id="1_1aajl"]
+[ext_resource type="Script" path="res://Item.gd" id="1_p70a0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dbjnh"]
+albedo_color = Color(0.0627451, 0.027451, 0.380392, 1)
+
+[resource]
+script = ExtResource("1_p70a0")
+icon = ExtResource("1_1aajl")
+name = "Jump Cube"
+color = Color(0.0627451, 0.027451, 0.380392, 1)
+material = SubResource("StandardMaterial3D_dbjnh")
+type = "Skill"
+description = "A cube that gives you a jump boost"
