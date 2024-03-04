@@ -5,8 +5,6 @@ class_name Item
 @export var name: String
 @export var color: Color
 @export var material: StandardMaterial3D
-
-@export_enum("No Skill", "Skill")
-var type = "No Skill"
+@export var pickable: bool = true
 
 @export_multiline var description: String

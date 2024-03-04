@@ -100,6 +100,8 @@ var head_bobbing_cur_intensity: float = 0.0
 #region Public Variables
 var picked_item: bool = false
 var inHandItem: RigidBody3D
+signal PickedItem(object: Object)
+signal DroppedItem
 #endregion
 
 #region Onready Variables
@@ -348,34 +350,35 @@ func handle_pick_n_drop():
 	var collider = ray_hit.get_collider()
 
 	# Picking mech
-	if collider is Cube: # && !picked_item
+	if collider is Cube and collider.stats.pickable == true: # && !picked_item
 		interact_text.visible = true
 		if Input.is_action_just_pressed("Interact_Key"):
-			inHandItem = ray_hit.get_collider()
-			inHandItem.reparent(pick_up_slot, false)
-			inHandItem.freeze = true
-			inHandItem.get_node("CollisionShape3D").disabled = true
-			inHandItem.get_node("MeshInstance3D").cast_shadow = false
-			inHandItem.position = Vector3.ZERO
-			inHandItem.rotation = Vector3.ZERO
-			hand_collision_shape.disabled = false
-			hand_collision_shape.shape = inHandItem.get_node("CollisionShape3D").shape
-			add_item(inHandItem.stats, inHandItem.skill)
-			picked_item = true
+			PickedItem.emit(collider)
+			#inHandItem = ray_hit.get_collider()
+			#inHandItem.reparent(pick_up_slot, false)
+			#inHandItem.freeze = true
+			#inHandItem.get_node("CollisionShape3D").disabled = true
+			#inHandItem.get_node("MeshInstance3D").cast_shadow = false
+			#inHandItem.position = Vector3.ZERO
+			#inHandItem.rotation = Vector3.ZERO
+			#hand_collision_shape.disabled = false
+			#hand_collision_shape.shape = inHandItem.get_node("CollisionShape3D").shape
+			#add_item(inHandItem.stats, inHandItem.skill)
 	else:
 		interact_text.visible = false
 	
 	# Dropping mech
-	if Input.is_action_just_pressed("Drop_Key") && picked_item:
-		inHandItem.reparent(level)
-		inHandItem.freeze = false
-		inHandItem.get_node("CollisionShape3D").disabled = false
-		inHandItem.get_node("MeshInstance3D").cast_shadow = true
-		hand_collision_shape.disabled = true
-		var throw_vector := -head.global_transform.basis.z.normalized()
-		inHandItem.apply_central_impulse(throw_vector * throw_power * clamp(velocity.length()/6.0,1,3) +\
-		 Vector3(velocity.x / 4.0, velocity.y / 7.0 + 1.5, velocity.z / 4.0))
-		picked_item = false
+	if Input.is_action_just_pressed("Drop_Key"):
+		if hotbar.check_item_here(pick_up_slot.get_child(hotbar.current_index).stats) == true:
+			DroppedItem.emit()
+		#inHandItem.reparent(level)
+		#inHandItem.freeze = false
+		#inHandItem.get_node("CollisionShape3D").disabled = false
+		#inHandItem.get_node("MeshInstance3D").cast_shadow = true
+		#hand_collision_shape.disabled = true
+		#var throw_vector := -head.global_transform.basis.z.normalized()
+		#inHandItem.apply_central_impulse(throw_vector * throw_power * clamp(velocity.length()/6.0,1,3) +\
+		 #Vector3(velocity.x / 4.0, velocity.y / 7.0 + 1.5, velocity.z / 4.0))
 	if picked_item:
 		drop_text.visible = true
 		hand_collision_shape.global_transform = inHandItem.get_node("CollisionShape3D").global_transform

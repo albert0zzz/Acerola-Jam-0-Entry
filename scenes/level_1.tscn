@@ -203,3 +203,6 @@ mesh = SubResource("BoxMesh_vu1kr")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("2_xtyyw")]
+
+[connection signal="DroppedItem" from="Player" to="AbstractItem" method="_on_player_dropped_item"]
+[connection signal="PickedItem" from="Player" to="AbstractItem" method="_on_player_picked_item"]

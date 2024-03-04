@@ -1,6 +1,7 @@
 extends HBoxContainer
 
 @onready var slots = get_children()
+signal index(i: int)
 
 var current_index: int:
 	set(value):
@@ -18,6 +19,7 @@ func reset_focus():
 func set_focus():
 	get_child(current_index).grab_focus()
 	get_child(current_index).set_process_input(true)
+	index.emit(current_index)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Scroll_Down"):
@@ -45,3 +47,9 @@ func drop_item(stats, skill):
 			slot.stats = null
 			slot.skill = null
 			return
+
+func check_item_here(stats) -> bool: 
+	for slot in slots:
+		if slot.stats == null:
+			return false
+	return true

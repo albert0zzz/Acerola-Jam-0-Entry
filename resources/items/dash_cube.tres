@@ -12,5 +12,5 @@ icon = ExtResource("1_3poc3")
 name = "Dash Cube"
 color = Color(0.0823529, 0.560784, 0.027451, 1)
 material = SubResource("StandardMaterial3D_oqo2x")
-type = "Skill"
+pickable = true
 description = "This cube gives ability to dash"
