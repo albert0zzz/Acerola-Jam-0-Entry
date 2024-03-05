@@ -101,7 +101,7 @@ var head_bobbing_cur_intensity: float = 0.0
 var picked_item: bool = false
 var inHandItem: RigidBody3D
 signal PickedItem(object: Object)
-signal DroppedItem
+signal DroppedItem(object: Object)
 #endregion
 
 #region Onready Variables
@@ -120,6 +120,8 @@ signal DroppedItem
 @onready var level: Node3D = $".."
 @onready var hand_collision_shape: CollisionShape3D = $HandCollisionShape
 @onready var hotbar: HBoxContainer = $Control/Hotbar
+
+const SLOT = preload("res://slot.tscn")
 
 #endregion
 
@@ -366,11 +368,14 @@ func handle_pick_n_drop():
 			#add_item(inHandItem.stats, inHandItem.skill)
 	else:
 		interact_text.visible = false
-	
+
 	# Dropping mech
 	if Input.is_action_just_pressed("Drop_Key"):
-		if hotbar.check_item_here(pick_up_slot.get_child(hotbar.current_index).stats) == true:
-			DroppedItem.emit()
+		var hand_item = pick_up_slot.get_child(hotbar.current_index)
+		DroppedItem.emit(hand_item)
+		#
+		#if hotbar.check_item_here(pick_up_slot.get_child(hotbar.current_index).stats) == true:
+			
 		#inHandItem.reparent(level)
 		#inHandItem.freeze = false
 		#inHandItem.get_node("CollisionShape3D").disabled = false
@@ -379,6 +384,7 @@ func handle_pick_n_drop():
 		#var throw_vector := -head.global_transform.basis.z.normalized()
 		#inHandItem.apply_central_impulse(throw_vector * throw_power * clamp(velocity.length()/6.0,1,3) +\
 		 #Vector3(velocity.x / 4.0, velocity.y / 7.0 + 1.5, velocity.z / 4.0))
+		pass
 	if picked_item:
 		drop_text.visible = true
 		hand_collision_shape.global_transform = inHandItem.get_node("CollisionShape3D").global_transform

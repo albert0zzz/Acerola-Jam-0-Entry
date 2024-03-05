@@ -12,5 +12,5 @@ icon = ExtResource("1_1aajl")
 name = "Jump Cube"
 color = Color(0.0627451, 0.027451, 0.380392, 1)
 material = SubResource("StandardMaterial3D_dbjnh")
-type = "Skill"
+pickable = true
 description = "A cube that gives you a jump boost"

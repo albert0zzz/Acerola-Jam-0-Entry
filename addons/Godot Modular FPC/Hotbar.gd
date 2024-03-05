@@ -40,16 +40,22 @@ func add_item(stats, skill):
 			slot.stats = stats
 			slot.skill = skill
 			return
+	#if slots[current_index].stats == null:
+		#slots[current_index].stats = stats
+		#slots[current_index].skill = skill
+		#return
 
 func drop_item(stats, skill):
-	for slot in slots:
-		if slot.stats != null:
-			slot.stats = null
-			slot.skill = null
-			return
+	if slots[current_index].stats != null:
+		slots[current_index].stats = null
+		slots[current_index].skill = null
+		return
 
 func check_item_here(stats) -> bool: 
-	for slot in slots:
-		if slot.stats == null:
-			return false
-	return true
+	var here: bool
+	
+	if get_child(current_index).stats != null:
+		here = true
+	else:
+		here = false
+	return here

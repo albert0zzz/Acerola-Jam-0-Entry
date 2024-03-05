@@ -11,8 +11,6 @@ class_name Cube
 @onready var level: Node3D = $".."
 @onready var head: Node3D = $"../Player/Head"
 
-var hand_item: Object
-
 @export var stats: Item
 @export var skill: Skill
 
@@ -31,16 +29,18 @@ func _on_player_picked_item(object) -> void:
 	#player.hand_collision_shape.shape = object.collision.shape
 	player.add_item(object.stats, object.skill)
 
-func _on_player_dropped_item() -> void:
+func _on_player_dropped_item(hand_item) -> void:
 	hand_item = pick_up_slot.get_child(hotbar.current_index)
 	hand_item.reparent(level)
 	hand_item.freeze = false
 	hand_item.collision.disabled = false
 	hand_item.mesh.cast_shadow = true
-	#hand_collision_shape.disabled = true
+		#hand_collision_shape.disabled = true
 	var throw_vector := -head.global_transform.basis.z.normalized()
 	hand_item.apply_central_impulse(throw_vector * 15.0 * clamp(player.velocity.length()/6.0,1,3) +\
 	Vector3(player.velocity.x / 4.0, player.velocity.y / 7.0 + 1.5, player.velocity.z / 4.0))
+	#player.drop_item(hand_item.stats, hand_item.skill)
+	pass
 
 
 
