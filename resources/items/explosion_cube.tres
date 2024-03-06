@@ -12,5 +12,4 @@ icon = ExtResource("1_xtajs")
 name = "Explosion Cube"
 color = Color(0.588235, 0.0235294, 0.0235294, 1)
 material = SubResource("StandardMaterial3D_2as5p")
-pickable = true
 description = "This cube explodes"

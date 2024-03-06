@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dnisxunjm7m2l"]
+[gd_scene load_steps=11 format=3 uid="uid://dnisxunjm7m2l"]
 
 [ext_resource type="Script" path="res://addons/Godot Modular FPC/player.gd" id="1_o5wto"]
 [ext_resource type="Texture2D" uid="uid://wmhyom30iy62" path="res://addons/Godot Modular FPC/Crosshair.png" id="2_gaihr"]
 [ext_resource type="Script" path="res://PickUpSlot.gd" id="2_wurgt"]
+[ext_resource type="PackedScene" uid="uid://dbqx3nxanlft5" path="res://scenes/empty_slot.tscn" id="3_1hj25"]
 [ext_resource type="PackedScene" uid="uid://cb6y31aurfk6s" path="res://slot.tscn" id="3_fhvxy"]
 [ext_resource type="Script" path="res://addons/Godot Modular FPC/Hotbar.gd" id="3_xtv58"]
 
@@ -54,6 +55,14 @@ collision_mask = 13
 [node name="PickUpSlot" type="Node3D" parent="Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.738503, -0.734882)
 script = ExtResource("2_wurgt")
+
+[node name="EmptySlot" parent="Head/PickUpSlot" instance=ExtResource("3_1hj25")]
+
+[node name="EmptySlot2" parent="Head/PickUpSlot" instance=ExtResource("3_1hj25")]
+
+[node name="EmptySlot3" parent="Head/PickUpSlot" instance=ExtResource("3_1hj25")]
+
+[node name="EmptySlot4" parent="Head/PickUpSlot" instance=ExtResource("3_1hj25")]
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -163,6 +172,14 @@ layout_mode = 2
 
 [node name="Slot4" parent="Control/Hotbar" instance=ExtResource("3_fhvxy")]
 layout_mode = 2
+
+[node name="JumpBoostCooldown" type="Timer" parent="."]
+wait_time = 3.7
+one_shot = true
+
+[node name="DashCooldown" type="Timer" parent="."]
+wait_time = 1.813
+one_shot = true
 
 [connection signal="child_entered_tree" from="Head/PickUpSlot" to="Head/PickUpSlot" method="_on_child_entered_tree"]
 [connection signal="index" from="Control/Hotbar" to="Head/PickUpSlot" method="_on_hotbar_index"]

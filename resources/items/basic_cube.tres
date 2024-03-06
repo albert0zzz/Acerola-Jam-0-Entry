@@ -12,5 +12,4 @@ icon = ExtResource("1_86wks")
 name = "Basic Cube"
 color = Color(0.560784, 0.560784, 0.560784, 1)
 material = SubResource("StandardMaterial3D_xrn4c")
-pickable = true
 description = "A cube that does nothng"

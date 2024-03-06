@@ -101,7 +101,7 @@ var head_bobbing_cur_intensity: float = 0.0
 var picked_item: bool = false
 var inHandItem: RigidBody3D
 signal PickedItem(object: Object)
-signal DroppedItem(object: Object)
+signal DroppedItem()
 #endregion
 
 #region Onready Variables
@@ -120,6 +120,9 @@ signal DroppedItem(object: Object)
 @onready var level: Node3D = $".."
 @onready var hand_collision_shape: CollisionShape3D = $HandCollisionShape
 @onready var hotbar: HBoxContainer = $Control/Hotbar
+@onready var jump_boost_cooldown: Timer = $JumpBoostCooldown
+@onready var dash_cooldown: Timer = $DashCooldown
+
 
 const SLOT = preload("res://slot.tscn")
 
@@ -169,10 +172,11 @@ func _physics_process(delta: float) -> void:
 	handle_jump()
 	handle_crouch(delta)
 	handle_headBob(delta)
-	handle_movement(input_dir, delta)
+	
 	handle_pick_n_drop()
+	handle_movement(input_dir, delta)
+	
 	move_and_slide()
-
 
 func apply_gravity(delta: float) -> void:
 	if !is_on_floor():
@@ -308,13 +312,13 @@ func handle_movement(input_dir: Vector2, delta: float) -> void:
 			(transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized(), 
 			delta * lerp_speed,
 			)
-	else:
-		if input_dir != Vector2.ZERO:
-			direction = lerp(
-				direction, 
-				(transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized(),
-				delta * air_lerp_speed,
-				)
+	#else:
+		#if input_dir != Vector2.ZERO:
+			#direction = lerp(
+				#direction, 
+				#(transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized(),
+				#delta * air_lerp_speed,
+				#)
 	
 	if Enable_Player_Movement:
 		# Checks if player is walking and is on floor
@@ -344,6 +348,8 @@ func handle_movement(input_dir: Vector2, delta: float) -> void:
 			else:
 				cur_speed = lerp(cur_speed, Walk_Speed, delta * lerp_speed)
 		
+		
+		
 		if direction:
 			velocity.x = direction.x * cur_speed
 			velocity.z = direction.z * cur_speed
@@ -352,55 +358,48 @@ func handle_pick_n_drop():
 	var collider = ray_hit.get_collider()
 
 	# Picking mech
-	if collider is Cube and collider.stats.pickable == true: # && !picked_item
+	if collider is Cube: # && !picked_item
 		interact_text.visible = true
-		if Input.is_action_just_pressed("Interact_Key"):
-			PickedItem.emit(collider)
-			#inHandItem = ray_hit.get_collider()
-			#inHandItem.reparent(pick_up_slot, false)
-			#inHandItem.freeze = true
-			#inHandItem.get_node("CollisionShape3D").disabled = true
-			#inHandItem.get_node("MeshInstance3D").cast_shadow = false
-			#inHandItem.position = Vector3.ZERO
-			#inHandItem.rotation = Vector3.ZERO
-			#hand_collision_shape.disabled = false
-			#hand_collision_shape.shape = inHandItem.get_node("CollisionShape3D").shape
-			#add_item(inHandItem.stats, inHandItem.skill)
+		if Input.is_action_just_pressed("Interact_Key") and !(pick_up_slot.get_child(hotbar.current_index) is Cube):
+			PickedItem.emit(collider) # to abstract item
 	else:
 		interact_text.visible = false
 
 	# Dropping mech
 	if Input.is_action_just_pressed("Drop_Key"):
+		if pick_up_slot.get_child(hotbar.current_index) is Cube:
+			DroppedItem.emit()
+	if pick_up_slot.get_child(hotbar.current_index) is Cube:
 		var hand_item = pick_up_slot.get_child(hotbar.current_index)
-		DroppedItem.emit(hand_item)
-		#
-		#if hotbar.check_item_here(pick_up_slot.get_child(hotbar.current_index).stats) == true:
-			
-		#inHandItem.reparent(level)
-		#inHandItem.freeze = false
-		#inHandItem.get_node("CollisionShape3D").disabled = false
-		#inHandItem.get_node("MeshInstance3D").cast_shadow = true
-		#hand_collision_shape.disabled = true
-		#var throw_vector := -head.global_transform.basis.z.normalized()
-		#inHandItem.apply_central_impulse(throw_vector * throw_power * clamp(velocity.length()/6.0,1,3) +\
-		 #Vector3(velocity.x / 4.0, velocity.y / 7.0 + 1.5, velocity.z / 4.0))
-		pass
-	if picked_item:
-		drop_text.visible = true
-		hand_collision_shape.global_transform = inHandItem.get_node("CollisionShape3D").global_transform
+		hand_collision_shape.disabled = false
+		hand_collision_shape.global_transform = hand_item.get_node("CollisionShape3D").global_transform
 	else:
-		drop_text.visible = false
+		hand_collision_shape.disabled = true
 
 func handle_skill(skill):
-	if skill.name == "Jump Boost":
+	if skill.name == "Jump Boost" and jump_boost_cooldown.time_left == 0:
 		print("Jump Boost")
-	if skill.name == "Dash":
+		handle_jump_boost()
+		velocity.y = Jump_Power * 2
+		jump_boost_cooldown.start()
+	if skill.name == "Dash" and dash_cooldown.time_left == 0:
 		print("Dash")
+		handle_dash()
+		dash_cooldown.start()
+		
 	if skill.name == "Explosion Boost":
 		print("Explosion Boost")
 	if skill.name == "No Skill":
 		print("No Skill")
-	
+
+func handle_jump_boost():
+	velocity.y = Jump_Power * 2
+
+func handle_dash():
+	var dash_vec = -head.global_transform.basis.z
+	velocity.z += dash_vec.z * 10
+	velocity.x += dash_vec.x * 10
+
 func add_item(stats, skill):
 	hotbar.add_item(stats, skill)
 

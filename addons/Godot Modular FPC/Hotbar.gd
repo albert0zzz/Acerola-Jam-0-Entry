@@ -1,5 +1,7 @@
 extends HBoxContainer
 
+const SLOT = preload("res://slot.tscn")
+
 @onready var slots = get_children()
 signal index(i: int)
 
@@ -19,7 +21,8 @@ func reset_focus():
 func set_focus():
 	get_child(current_index).grab_focus()
 	get_child(current_index).set_process_input(true)
-	index.emit(current_index)
+	index.emit(current_index) # in pickup slot
+
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Scroll_Down"):
@@ -33,13 +36,21 @@ func _input(event: InputEvent) -> void:
 			current_index = get_child_count() - 1
 		else:
 			current_index -= 1
+	
+	if event.is_action_pressed("First_Slot"):
+		current_index = 0
+	if event.is_action_pressed("Second_Slot"):
+		current_index = 1
+	if event.is_action_pressed("Trird_Slot"):
+		current_index = 2
+	if event.is_action_pressed("Fourth_Slot"):
+		current_index = 3
 
 func add_item(stats, skill):
-	for slot in slots:
-		if slot.stats == null:
-			slot.stats = stats
-			slot.skill = skill
-			return
+	if slots[current_index].stats == null:
+		slots[current_index].stats = stats
+		slots[current_index].skill = skill
+		return
 	#if slots[current_index].stats == null:
 		#slots[current_index].stats = stats
 		#slots[current_index].skill = skill
