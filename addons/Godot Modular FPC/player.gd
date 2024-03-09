@@ -123,7 +123,7 @@ signal DroppedItem()
 @onready var jump_boost_cooldown: Timer = $JumpBoostCooldown
 @onready var dash_cooldown: Timer = $DashCooldown
 
-
+var dash_used: bool = false
 const SLOT = preload("res://slot.tscn")
 
 #endregion
@@ -172,10 +172,9 @@ func _physics_process(delta: float) -> void:
 	handle_jump()
 	handle_crouch(delta)
 	handle_headBob(delta)
-	
 	handle_pick_n_drop()
 	handle_movement(input_dir, delta)
-	
+	apply_friction(input_dir, delta)
 	move_and_slide()
 
 func apply_gravity(delta: float) -> void:
@@ -307,52 +306,75 @@ func handle_headBob(delta: float) -> void:
 
 func handle_movement(input_dir: Vector2, delta: float) -> void:
 	if is_on_floor():
-		direction = lerp(
-			direction, 
-			(transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized(), 
-			delta * lerp_speed,
-			)
+		direction = transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized()
+		dash_used = false
+	else:
+		if input_dir != Vector2.ZERO:
+			direction = transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized()
+	
+	if is_on_floor(): #and dash_cooldown.time_left == 0
+		velocity.x = lerp(velocity.x, cur_speed * direction.x, 1)
+		velocity.z = lerp(velocity.z, cur_speed * direction.z, 1)
+	if dash_used == false:
+		velocity.x = direction.x * cur_speed
+		velocity.z = direction.z * cur_speed
+	
+	#if direction:
+		#velocity.x = direction.x * cur_speed
+		#velocity.z = direction.z * cur_speed
 	#else:
-		#if input_dir != Vector2.ZERO:
-			#direction = lerp(
-				#direction, 
-				#(transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized(),
-				#delta * air_lerp_speed,
-				#)
+		#velocity.x = move_toward(velocity.x, 0, cur_speed)
+		#velocity.z = move_toward(velocity.z, 0, cur_speed)
+	
+	if Input.is_action_just_pressed("Interact_Key") and !(ray_hit.get_collider() is Cube):
+		if pick_up_slot.get_child(hotbar.current_index).skill != null:
+			#print("bruh")
+			if pick_up_slot.get_child(hotbar.current_index).skill.name == "Jump Boost": # and jump_boost_cooldown.time_left == 0
+				print("Jump Boost")
+				velocity.y = Jump_Power * 2
+				jump_boost_cooldown.start()
+			if pick_up_slot.get_child(hotbar.current_index).skill.name == "Dash": #and dash_cooldown.time_left == 0
+				print("Dash")
+				#var dash_vec = -head.global_transform.basis.z
+				dash_used = true
+				velocity.y = 3
+				velocity.z = -head.global_transform.basis.z.z * 25
+				velocity.x = -head.global_transform.basis.z.x * 25
+				print_debug(velocity)
+				dash_cooldown.start()
+				
+			if pick_up_slot.get_child(hotbar.current_index).skill.name == "Explosion Boost":
+				print("Explosion Boost")
+			if pick_up_slot.get_child(hotbar.current_index).skill.name == "No Skill":
+				print("No Skill")
 	
 	if Enable_Player_Movement:
-		# Checks if player is walking and is on floor
-		# Will allow head bob
 		if input_dir != Vector2.ZERO && is_on_floor():
 			is_walking = true
 		else:
 			is_walking = false
 		
-		# All movement calculations shile sprint is active
 		if Enable_Sprint && Input.is_action_pressed("Sprint_Key") && sprint_remaining > 0.0 && !is_sprint_cooldown && !is_crouching && (input_dir != Vector2.ZERO):
-			# Apply a force that attempts to reach our target velocity
-			cur_speed = lerp(cur_speed, Sprint_Speed, delta * lerp_speed)
+			#cur_speed = lerp(cur_speed, Sprint_Speed, delta * lerp_speed)
+			cur_speed = move_toward(cur_speed, Sprint_Speed, lerp_speed)
 			is_sprinting = true
-			if Hide_Full_Bar && !Unlimited_Sprint:
-				sprint_bar.modulate.a += 5.0 * delta
-				sprint_bar.modulate.a = clamp(sprint_bar.modulate.a, 0, 1)
-		# All movement calculations while walking
 		else:
 			is_sprinting = false
-			if Hide_Full_Bar && sprint_remaining == Sprint_Duration:
-				sprint_bar.modulate.a -= 2.0 * delta
-				sprint_bar.modulate.a = clamp(sprint_bar.modulate.a, 0, 1)
-			# Apply a force that attempts to reach our target velocity
 			if Enable_Crouch && is_crouching && is_on_floor():
-				cur_speed = lerp(cur_speed, Crouch_Speed, delta * lerp_speed)
+				#cur_speed = lerp(cur_speed, Crouch_Speed, delta * lerp_speed)
+				cur_speed = move_toward(cur_speed, Crouch_Speed, lerp_speed)
 			else:
-				cur_speed = lerp(cur_speed, Walk_Speed, delta * lerp_speed)
-		
-		
-		
-		if direction:
-			velocity.x = direction.x * cur_speed
-			velocity.z = direction.z * cur_speed
+				#cur_speed = lerp(cur_speed, Walk_Speed, delta * lerp_speed)
+				cur_speed = move_toward(cur_speed, Walk_Speed, lerp_speed)
+
+func apply_friction(input_dir: Vector2, delta: float):
+	if !input_dir and is_on_floor():
+		#velocity.x = move_toward(velocity.x, 0.0, 10)
+		#velocity.z = move_toward(velocity.z, 0.0, 10)
+		#velocity.x = direction.x * cur_speed
+		#velocity.z = direction.z * cur_speed
+		pass
+	
 
 func handle_pick_n_drop():
 	var collider = ray_hit.get_collider()
@@ -375,30 +397,6 @@ func handle_pick_n_drop():
 		hand_collision_shape.global_transform = hand_item.get_node("CollisionShape3D").global_transform
 	else:
 		hand_collision_shape.disabled = true
-
-func handle_skill(skill):
-	if skill.name == "Jump Boost" and jump_boost_cooldown.time_left == 0:
-		print("Jump Boost")
-		handle_jump_boost()
-		velocity.y = Jump_Power * 2
-		jump_boost_cooldown.start()
-	if skill.name == "Dash" and dash_cooldown.time_left == 0:
-		print("Dash")
-		handle_dash()
-		dash_cooldown.start()
-		
-	if skill.name == "Explosion Boost":
-		print("Explosion Boost")
-	if skill.name == "No Skill":
-		print("No Skill")
-
-func handle_jump_boost():
-	velocity.y = Jump_Power * 2
-
-func handle_dash():
-	var dash_vec = -head.global_transform.basis.z
-	velocity.z += dash_vec.z * 10
-	velocity.x += dash_vec.x * 10
 
 func add_item(stats, skill):
 	hotbar.add_item(stats, skill)
