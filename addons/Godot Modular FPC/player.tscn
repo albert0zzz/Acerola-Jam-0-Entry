@@ -181,5 +181,10 @@ one_shot = true
 wait_time = 1.813
 one_shot = true
 
+[node name="ExplosionCooldown" type="Timer" parent="."]
+wait_time = 1.52
+one_shot = true
+
+[connection signal="TimerSend" from="." to="Control/Hotbar" method="_on_player_timer_send"]
 [connection signal="child_entered_tree" from="Head/PickUpSlot" to="Head/PickUpSlot" method="_on_child_entered_tree"]
 [connection signal="index" from="Control/Hotbar" to="Head/PickUpSlot" method="_on_hotbar_index"]

@@ -102,6 +102,7 @@ var picked_item: bool = false
 var inHandItem: RigidBody3D
 signal PickedItem(object: Object)
 signal DroppedItem()
+signal TimerSend(time: float)
 #endregion
 
 #region Onready Variables
@@ -122,8 +123,13 @@ signal DroppedItem()
 @onready var hotbar: HBoxContainer = $Control/Hotbar
 @onready var jump_boost_cooldown: Timer = $JumpBoostCooldown
 @onready var dash_cooldown: Timer = $DashCooldown
+@onready var explosion_cooldown: Timer = $ExplosionCooldown
 
 var dash_used: bool = false
+var dash_dir: Vector3 = Vector3.ZERO
+var explosion_used: bool = false
+var explosion_dir: Vector3 = Vector3.ZERO
+var jump_boost_used: bool = false
 const SLOT = preload("res://slot.tscn")
 
 #endregion
@@ -166,7 +172,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	var input_dir := Input.get_vector(
 		"move_left", "move_right", "move_forward", "move_back")
-	apply_gravity(delta)
+	
 	handle_camera_zoom(delta)
 	handle_sprint(input_dir, delta)
 	handle_jump()
@@ -175,6 +181,7 @@ func _physics_process(delta: float) -> void:
 	handle_pick_n_drop()
 	handle_movement(input_dir, delta)
 	apply_friction(input_dir, delta)
+	apply_gravity(delta)
 	move_and_slide()
 
 func apply_gravity(delta: float) -> void:
@@ -308,17 +315,32 @@ func handle_movement(input_dir: Vector2, delta: float) -> void:
 	if is_on_floor():
 		direction = transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized()
 		dash_used = false
+		explosion_used = false
+		jump_boost_used = false
 	else:
 		if input_dir != Vector2.ZERO:
-			direction = transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized()
+			direction = lerp(
+				direction, 
+				(transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized(),
+				delta * air_lerp_speed,
+				)
 	
 	if is_on_floor(): #and dash_cooldown.time_left == 0
 		velocity.x = lerp(velocity.x, cur_speed * direction.x, 1)
 		velocity.z = lerp(velocity.z, cur_speed * direction.z, 1)
-	if dash_used == false:
+	else:
 		velocity.x = direction.x * cur_speed
 		velocity.z = direction.z * cur_speed
 	
+	if dash_used == true:
+		velocity.z = dash_dir.z + direction.z * 6
+		velocity.x = dash_dir.x + direction.x * 6
+		#velocity.x = direction.x * cur_speed
+		#velocity.z = direction.z * cur_speed
+	if explosion_used == true:
+		print_debug(explosion_dir)
+		velocity.z = explosion_dir.z * 12 + direction.z * 10
+		velocity.x = explosion_dir.x * 12 + direction.x * 10
 	#if direction:
 		#velocity.x = direction.x * cur_speed
 		#velocity.z = direction.z * cur_speed
@@ -329,22 +351,35 @@ func handle_movement(input_dir: Vector2, delta: float) -> void:
 	if Input.is_action_just_pressed("Interact_Key") and !(ray_hit.get_collider() is Cube):
 		if pick_up_slot.get_child(hotbar.current_index).skill != null:
 			#print("bruh")
-			if pick_up_slot.get_child(hotbar.current_index).skill.name == "Jump Boost": # and jump_boost_cooldown.time_left == 0
+			if pick_up_slot.get_child(hotbar.current_index).skill.name == "Jump Boost" and jump_boost_cooldown.time_left == 0:
 				print("Jump Boost")
-				velocity.y = Jump_Power * 2
+				jump_boost_used = true
+				dash_used = false
+				explosion_used = false
+				velocity.y = Jump_Power * 1.5
 				jump_boost_cooldown.start()
-			if pick_up_slot.get_child(hotbar.current_index).skill.name == "Dash": #and dash_cooldown.time_left == 0
+				TimerSend.emit(jump_boost_cooldown.wait_time)
+			if pick_up_slot.get_child(hotbar.current_index).skill.name == "Dash" and dash_cooldown.time_left == 0: 
 				print("Dash")
 				#var dash_vec = -head.global_transform.basis.z
-				dash_used = true
 				velocity.y = 3
-				velocity.z = -head.global_transform.basis.z.z * 25
-				velocity.x = -head.global_transform.basis.z.x * 25
-				print_debug(velocity)
+				dash_used = true
+				explosion_used = false
+				jump_boost_used = false
+				dash_dir = -global_transform.basis.z * 20
+				explosion_dir = Vector3.ZERO
 				dash_cooldown.start()
-				
-			if pick_up_slot.get_child(hotbar.current_index).skill.name == "Explosion Boost":
+				TimerSend.emit(dash_cooldown.wait_time)
+			if pick_up_slot.get_child(hotbar.current_index).skill.name == "Explosion Boost" and explosion_cooldown.time_left == 0:
 				print("Explosion Boost")
+				explosion_dir = head.global_transform.basis.z.normalized()
+				dash_dir = Vector3.ZERO
+				velocity.y = explosion_dir.y * 10 + 1
+				dash_used = false
+				explosion_used = true
+				jump_boost_used = false
+				explosion_cooldown.start()
+				TimerSend.emit(explosion_cooldown.wait_time)
 			if pick_up_slot.get_child(hotbar.current_index).skill.name == "No Skill":
 				print("No Skill")
 	
@@ -369,10 +404,14 @@ func handle_movement(input_dir: Vector2, delta: float) -> void:
 
 func apply_friction(input_dir: Vector2, delta: float):
 	if !input_dir and is_on_floor():
-		#velocity.x = move_toward(velocity.x, 0.0, 10)
-		#velocity.z = move_toward(velocity.z, 0.0, 10)
+		velocity.x = move_toward(velocity.x, 0.0, 10)
+		velocity.z = move_toward(velocity.z, 0.0, 10)
 		#velocity.x = direction.x * cur_speed
 		#velocity.z = direction.z * cur_speed
+	if dash_used == true or explosion_used == true:
+		if is_crouching:
+			velocity.x = lerp(velocity.x, 0.0, 10 * delta)
+			velocity.z = lerp(velocity.z, 0.0, 10 * delta)
 		pass
 	
 

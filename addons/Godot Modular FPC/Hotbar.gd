@@ -70,3 +70,13 @@ func check_item_here(stats) -> bool:
 	else:
 		here = false
 	return here
+
+func _process(delta: float) -> void:
+	if get_child(current_index).timer.time_left == 0:
+		get_child(current_index).set_process(false)
+
+func _on_player_timer_send(time: float) -> void:
+	get_child(current_index).timer.wait_time = time
+	get_child(current_index).progress_bar.max_value = get_child(current_index).timer.wait_time
+	get_child(current_index).timer.start()
+	get_child(current_index).set_process(true)
