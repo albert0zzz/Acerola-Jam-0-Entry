@@ -11,13 +11,25 @@ config_version=5
 [application]
 
 config/name="Cube Distribution System"
-run/main_scene="res://scenes/level_1.tscn"
+run/main_scene="res://addons/Basic UI/main_menu.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Globals="*res://Globals.gd"
+
+[debug]
+
+gdscript/warnings/untyped_declaration=1
 
 [display]
 
 window/size/always_on_top=true
+
+[editor]
+
+movie_writer/movie_file="C:/Users/Asus/Documents/Godot Projects/Movies/CDS.avi"
 
 [input]
 

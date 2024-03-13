@@ -10,7 +10,7 @@ size = Vector3(0.55, 0.55, 0.55)
 
 [node name="AbstractItem" type="RigidBody3D"]
 collision_layer = 8
-collision_mask = 13
+collision_mask = 29
 script = ExtResource("1_5m30s")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

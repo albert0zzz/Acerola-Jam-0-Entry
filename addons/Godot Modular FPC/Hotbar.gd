@@ -1,6 +1,7 @@
 extends HBoxContainer
 
 const SLOT = preload("res://slot.tscn")
+@onready var player: CharacterBody3D = $"../.."
 
 @onready var slots = get_children()
 signal index(i: int)
@@ -25,26 +26,27 @@ func set_focus():
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("Scroll_Down"):
-		if current_index == get_child_count() - 1:
-			current_index = 0
-		else:
-			current_index += 1
+	if player.Enable_Player_Movement == true:
+		if event.is_action_pressed("Scroll_Down"):
+			if current_index == get_child_count() - 1:
+				current_index = 0
+			else:
+				current_index += 1
+			
+		if event.is_action_pressed("Scroll_Up"):
+			if current_index == 0:
+				current_index = get_child_count() - 1
+			else:
+				current_index -= 1
 		
-	if event.is_action_pressed("Scroll_Up"):
-		if current_index == 0:
-			current_index = get_child_count() - 1
-		else:
-			current_index -= 1
-	
-	if event.is_action_pressed("First_Slot"):
-		current_index = 0
-	if event.is_action_pressed("Second_Slot"):
-		current_index = 1
-	if event.is_action_pressed("Trird_Slot"):
-		current_index = 2
-	if event.is_action_pressed("Fourth_Slot"):
-		current_index = 3
+		if event.is_action_pressed("First_Slot"):
+			current_index = 0
+		if event.is_action_pressed("Second_Slot"):
+			current_index = 1
+		if event.is_action_pressed("Trird_Slot"):
+			current_index = 2
+		if event.is_action_pressed("Fourth_Slot"):
+			current_index = 3
 
 func add_item(stats, skill):
 	if slots[current_index].stats == null:

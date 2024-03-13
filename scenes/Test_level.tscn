@@ -1,20 +1,20 @@
-[gd_scene load_steps=30 format=3 uid="uid://k074nautwpb0"]
+[gd_scene load_steps=30 format=3 uid="uid://beyqutgv0tuy6"]
 
-[ext_resource type="PackedScene" uid="uid://dnisxunjm7m2l" path="res://addons/Godot Modular FPC/player.tscn" id="1_6x1e6"]
-[ext_resource type="Script" path="res://scenes/level.gd" id="1_m37jn"]
-[ext_resource type="Texture2D" uid="uid://d1k8gwsuckb4o" path="res://assets/textures/grids/Dark/texture_07.png" id="2_81nln"]
-[ext_resource type="PackedScene" uid="uid://co2yscvyhngyb" path="res://addons/Basic UI/pause_menu.tscn" id="2_xtyyw"]
-[ext_resource type="PackedScene" uid="uid://diimwq0v6n0u6" path="res://abstract_item.tscn" id="3_2vu11"]
-[ext_resource type="Resource" uid="uid://b1wq7qg3l4uam" path="res://resources/items/basic_cube.tres" id="4_pnily"]
-[ext_resource type="Resource" uid="uid://bilpcjuhm6w78" path="res://resources/skills/no_skill.tres" id="5_w5dsv"]
-[ext_resource type="Resource" uid="uid://cmjntr8pjex33" path="res://resources/items/dash_cube.tres" id="6_t0ri5"]
-[ext_resource type="Resource" uid="uid://2si8yo6j2raj" path="res://resources/skills/dash.tres" id="7_d5572"]
-[ext_resource type="Resource" uid="uid://be4yxcb0201pm" path="res://resources/items/explosion_cube.tres" id="8_aifw3"]
-[ext_resource type="Resource" uid="uid://ci0pil4myy6bs" path="res://resources/skills/explosion_boost.tres" id="9_rexuo"]
-[ext_resource type="Resource" uid="uid://ct7ipxtfy8f60" path="res://resources/items/jump_cube.tres" id="10_wcoag"]
-[ext_resource type="Resource" uid="uid://da6rkaci74vqh" path="res://resources/skills/jump_boost.tres" id="11_7ok73"]
-[ext_resource type="PackedScene" uid="uid://blxmfbmq0ynfu" path="res://citizen.tscn" id="12_5horh"]
-[ext_resource type="PackedScene" uid="uid://dp1pr7j5mevcy" path="res://scenes/win_screen.tscn" id="14_oavj4"]
+[ext_resource type="Script" path="res://scenes/level.gd" id="1_4xx8s"]
+[ext_resource type="Texture2D" uid="uid://d1k8gwsuckb4o" path="res://assets/textures/grids/Dark/texture_07.png" id="2_21vjg"]
+[ext_resource type="PackedScene" uid="uid://dnisxunjm7m2l" path="res://addons/Godot Modular FPC/player.tscn" id="3_x54b5"]
+[ext_resource type="PackedScene" uid="uid://diimwq0v6n0u6" path="res://abstract_item.tscn" id="4_lqyux"]
+[ext_resource type="Resource" uid="uid://b1wq7qg3l4uam" path="res://resources/items/basic_cube.tres" id="5_dqhdk"]
+[ext_resource type="Resource" uid="uid://bilpcjuhm6w78" path="res://resources/skills/no_skill.tres" id="6_0hvmh"]
+[ext_resource type="Resource" uid="uid://cmjntr8pjex33" path="res://resources/items/dash_cube.tres" id="7_2kbyv"]
+[ext_resource type="Resource" uid="uid://2si8yo6j2raj" path="res://resources/skills/dash.tres" id="8_d8q5g"]
+[ext_resource type="Resource" uid="uid://ct7ipxtfy8f60" path="res://resources/items/jump_cube.tres" id="9_gt3n0"]
+[ext_resource type="Resource" uid="uid://da6rkaci74vqh" path="res://resources/skills/jump_boost.tres" id="10_wqix3"]
+[ext_resource type="Resource" uid="uid://be4yxcb0201pm" path="res://resources/items/explosion_cube.tres" id="11_agqnn"]
+[ext_resource type="Resource" uid="uid://ci0pil4myy6bs" path="res://resources/skills/explosion_boost.tres" id="12_mj682"]
+[ext_resource type="PackedScene" uid="uid://blxmfbmq0ynfu" path="res://citizen.tscn" id="13_7q5dk"]
+[ext_resource type="PackedScene" uid="uid://dp1pr7j5mevcy" path="res://scenes/win_screen.tscn" id="14_bvpbj"]
+[ext_resource type="PackedScene" uid="uid://co2yscvyhngyb" path="res://addons/Basic UI/pause_menu.tscn" id="15_nrmv8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i72wu"]
 sky_top_color = Color(0.0901961, 0.247059, 0.427451, 1)
@@ -31,7 +31,7 @@ sky = SubResource("Sky_ytkpk")
 tonemap_mode = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nt7jw"]
-albedo_texture = ExtResource("2_81nln")
+albedo_texture = ExtResource("2_21vjg")
 uv1_triplanar = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0fmjm"]
@@ -71,7 +71,7 @@ material = SubResource("StandardMaterial3D_sftpd")
 size = Vector3(0.55, 0.55, 0.55)
 
 [node name="Test_level" type="Node3D"]
-script = ExtResource("1_m37jn")
+script = ExtResource("1_4xx8s")
 level_time = 5.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -128,29 +128,29 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.6274
 size = Vector3(1.37402, 0.0556641, 0.0742188)
 material = SubResource("StandardMaterial3D_0fmjm")
 
-[node name="Player" parent="." instance=ExtResource("1_6x1e6")]
+[node name="Player" parent="." instance=ExtResource("3_x54b5")]
 Hitbox_Stand_Height = 1.8
 head_height = 1.6
 
-[node name="AbstractItem" parent="." instance=ExtResource("3_2vu11")]
+[node name="AbstractItem" parent="." instance=ExtResource("4_lqyux")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.37998)
-stats = ExtResource("4_pnily")
-skill = ExtResource("5_w5dsv")
+stats = ExtResource("5_dqhdk")
+skill = ExtResource("6_0hvmh")
 
-[node name="AbstractItem2" parent="." instance=ExtResource("3_2vu11")]
+[node name="AbstractItem2" parent="." instance=ExtResource("4_lqyux")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.57019)
-stats = ExtResource("6_t0ri5")
-skill = ExtResource("7_d5572")
+stats = ExtResource("7_2kbyv")
+skill = ExtResource("8_d8q5g")
 
-[node name="AbstractItem4" parent="." instance=ExtResource("3_2vu11")]
+[node name="AbstractItem4" parent="." instance=ExtResource("4_lqyux")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.37428, 0, -2.37998)
-stats = ExtResource("10_wcoag")
-skill = ExtResource("11_7ok73")
+stats = ExtResource("9_gt3n0")
+skill = ExtResource("10_wqix3")
 
-[node name="AbstractItem3" parent="." instance=ExtResource("3_2vu11")]
+[node name="AbstractItem3" parent="." instance=ExtResource("4_lqyux")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.10735, 0, -2.37998)
-stats = ExtResource("8_aifw3")
-skill = ExtResource("9_rexuo")
+stats = ExtResource("11_agqnn")
+skill = ExtResource("12_mj682")
 
 [node name="BlueCube" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.44464, -0.0027523, -3.0068)
@@ -212,17 +212,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000208102, 0.275, 0.000479
 layers = 8
 mesh = SubResource("BoxMesh_vu1kr")
 
-[node name="Citizen" parent="." instance=ExtResource("12_5horh")]
+[node name="Citizen" parent="." instance=ExtResource("13_7q5dk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.06032, 0.9, 0)
 
-[node name="Citizen2" parent="." instance=ExtResource("12_5horh")]
+[node name="Citizen2" parent="." instance=ExtResource("13_7q5dk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.98413, 1, 1.50264)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="WinScreen" parent="CanvasLayer" instance=ExtResource("14_oavj4")]
+[node name="WinScreen" parent="CanvasLayer" instance=ExtResource("14_bvpbj")]
 
-[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("2_xtyyw")]
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("15_nrmv8")]
 
 [connection signal="DroppedItem" from="Player" to="AbstractItem" method="_on_player_dropped_item"]
 [connection signal="PickedItem" from="Player" to="AbstractItem" method="_on_player_picked_item"]

@@ -25,9 +25,7 @@ func _process(delta: float) -> void:
 	progress_bar.value = timer.time_left
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("Interact_Key") and !(player.ray_hit.get_collider() is Cube):
-		pass
-	if event.is_action_pressed("Drop_Key"):
+	if event.is_action_pressed("Drop_Key") and player.Enable_Player_Movement == true:
 		drop_item()
 
 #func use_item():

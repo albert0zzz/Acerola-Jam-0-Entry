@@ -124,7 +124,14 @@ signal TimerSend(time: float)
 @onready var jump_boost_cooldown: Timer = $JumpBoostCooldown
 @onready var dash_cooldown: Timer = $DashCooldown
 @onready var explosion_cooldown: Timer = $ExplosionCooldown
+@onready var timer_time: Label = $Control/MarginContainer/TimerTime
+@onready var player_timer: Timer = $PlayerTimer
+@onready var footstep_player: AudioStreamPlayer3D = $FootstepPlayer
+@onready var game_over_screen: Control = $CanvasLayer/GameOverScreen
 
+
+var citizen_amount: int = 0
+var stepped: bool = false
 var dash_used: bool = false
 var dash_dir: Vector3 = Vector3.ZERO
 var explosion_used: bool = false
@@ -182,6 +189,9 @@ func _physics_process(delta: float) -> void:
 	handle_movement(input_dir, delta)
 	apply_friction(input_dir, delta)
 	apply_gravity(delta)
+	handle_level_timer()
+	handle_footsteps(input_dir)
+	win_condition()
 	move_and_slide()
 
 func apply_gravity(delta: float) -> void:
@@ -311,77 +321,87 @@ func handle_headBob(delta: float) -> void:
 			Camera.position.y = lerp(Camera.position.y, 0.0, delta * lerp_speed)
 			Camera.position.x = lerp(Camera.position.x, 0.0, delta * lerp_speed)
 
+func handle_footsteps(input_dir: Vector2):
+	if input_dir:
+		if head_bobbing_vector.y > 0 and stepped == false:
+			stepped = true
+			footstep_player.play()
+		elif head_bobbing_vector.y < 0:
+			stepped = false
+
 func handle_movement(input_dir: Vector2, delta: float) -> void:
-	if is_on_floor():
-		direction = transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized()
-		dash_used = false
-		explosion_used = false
-		jump_boost_used = false
-	else:
-		if input_dir != Vector2.ZERO:
-			direction = lerp(
-				direction, 
-				(transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized(),
-				delta * air_lerp_speed,
-				)
+	if Enable_Player_Movement:
+		if is_on_floor():
+			direction = transform.basis * Vector3(input_dir.x, 0, input_dir.y).normalized()
+			dash_used = false
+			explosion_used = false
+			jump_boost_used = false
+		else:
+			if input_dir != Vector2.ZERO:
+				direction = lerp(
+					direction, 
+					(transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized(),
+					delta * air_lerp_speed,
+					)
 	
-	if is_on_floor(): #and dash_cooldown.time_left == 0
-		velocity.x = lerp(velocity.x, cur_speed * direction.x, 1)
-		velocity.z = lerp(velocity.z, cur_speed * direction.z, 1)
-	else:
-		velocity.x = direction.x * cur_speed
-		velocity.z = direction.z * cur_speed
+		if is_on_floor(): #and dash_cooldown.time_left == 0
+			velocity.x = lerp(velocity.x, cur_speed * direction.x, 1)
+			velocity.z = lerp(velocity.z, cur_speed * direction.z, 1)
+		else:
+			velocity.x = direction.x * cur_speed
+			velocity.z = direction.z * cur_speed
+		
+		if dash_used == true:
+			velocity.z = dash_dir.z + direction.z * 6
+			velocity.x = dash_dir.x + direction.x * 6
+			#velocity.x = direction.x * cur_speed
+			#velocity.z = direction.z * cur_speed
+		if explosion_used == true:
+			print_debug(explosion_dir)
+			velocity.z = explosion_dir.z * 12 + direction.z * 10
+			velocity.x = explosion_dir.x * 12 + direction.x * 10
+		#if direction:
+			#velocity.x = direction.x * cur_speed
+			#velocity.z = direction.z * cur_speed
+		#else:
+			#velocity.x = move_toward(velocity.x, 0, cur_speed)
+			#velocity.z = move_toward(velocity.z, 0, cur_speed)
 	
-	if dash_used == true:
-		velocity.z = dash_dir.z + direction.z * 6
-		velocity.x = dash_dir.x + direction.x * 6
-		#velocity.x = direction.x * cur_speed
-		#velocity.z = direction.z * cur_speed
-	if explosion_used == true:
-		print_debug(explosion_dir)
-		velocity.z = explosion_dir.z * 12 + direction.z * 10
-		velocity.x = explosion_dir.x * 12 + direction.x * 10
-	#if direction:
-		#velocity.x = direction.x * cur_speed
-		#velocity.z = direction.z * cur_speed
-	#else:
-		#velocity.x = move_toward(velocity.x, 0, cur_speed)
-		#velocity.z = move_toward(velocity.z, 0, cur_speed)
-	
-	if Input.is_action_just_pressed("Interact_Key") and !(ray_hit.get_collider() is Cube):
-		if pick_up_slot.get_child(hotbar.current_index).skill != null:
-			#print("bruh")
-			if pick_up_slot.get_child(hotbar.current_index).skill.name == "Jump Boost" and jump_boost_cooldown.time_left == 0:
-				print("Jump Boost")
-				jump_boost_used = true
-				dash_used = false
-				explosion_used = false
-				velocity.y = Jump_Power * 1.5
-				jump_boost_cooldown.start()
-				TimerSend.emit(jump_boost_cooldown.wait_time)
-			if pick_up_slot.get_child(hotbar.current_index).skill.name == "Dash" and dash_cooldown.time_left == 0: 
-				print("Dash")
-				#var dash_vec = -head.global_transform.basis.z
-				velocity.y = 3
-				dash_used = true
-				explosion_used = false
-				jump_boost_used = false
-				dash_dir = -global_transform.basis.z * 20
-				explosion_dir = Vector3.ZERO
-				dash_cooldown.start()
-				TimerSend.emit(dash_cooldown.wait_time)
-			if pick_up_slot.get_child(hotbar.current_index).skill.name == "Explosion Boost" and explosion_cooldown.time_left == 0:
-				print("Explosion Boost")
-				explosion_dir = head.global_transform.basis.z.normalized()
-				dash_dir = Vector3.ZERO
-				velocity.y = explosion_dir.y * 10 + 1
-				dash_used = false
-				explosion_used = true
-				jump_boost_used = false
-				explosion_cooldown.start()
-				TimerSend.emit(explosion_cooldown.wait_time)
-			if pick_up_slot.get_child(hotbar.current_index).skill.name == "No Skill":
-				print("No Skill")
+		if Input.is_action_just_pressed("Interact_Key") and !(ray_hit.get_collider() is Cube):
+			if pick_up_slot.get_child(hotbar.current_index).skill != null:
+				#print("bruh")
+				if pick_up_slot.get_child(hotbar.current_index).skill.name == "Jump Boost" and jump_boost_cooldown.time_left == 0:
+					print("Jump Boost")
+					jump_boost_used = true
+					dash_used = false
+					explosion_used = false
+					velocity.y = Jump_Power * 1.5
+					jump_boost_cooldown.start()
+					TimerSend.emit(jump_boost_cooldown.wait_time)
+				if pick_up_slot.get_child(hotbar.current_index).skill.name == "Dash" and dash_cooldown.time_left == 0: 
+					print("Dash")
+					#var dash_vec = -head.global_transform.basis.z
+					velocity.y = 3
+					dash_used = true
+					explosion_used = false
+					jump_boost_used = false
+					dash_dir = -global_transform.basis.z * 20
+					explosion_dir = Vector3.ZERO
+					dash_cooldown.start()
+					TimerSend.emit(dash_cooldown.wait_time)
+				if pick_up_slot.get_child(hotbar.current_index).skill.name == "Explosion Boost" and explosion_cooldown.time_left == 0:
+					print("Explosion Boost")
+					explosion_dir = head.global_transform.basis.z.normalized()
+					dash_dir = Vector3.ZERO
+					velocity.y = explosion_dir.y * 10 + 1
+					dash_used = false
+					explosion_used = true
+					jump_boost_used = false
+					explosion_cooldown.start()
+					TimerSend.emit(explosion_cooldown.wait_time)
+				if pick_up_slot.get_child(hotbar.current_index).skill.name == "No Skill":
+					print("No Skill")
+					print(pick_up_slot.get_child(hotbar.current_index).pickable)
 	
 	if Enable_Player_Movement:
 		if input_dir != Vector2.ZERO && is_on_floor():
@@ -419,15 +439,16 @@ func handle_pick_n_drop():
 	var collider = ray_hit.get_collider()
 
 	# Picking mech
-	if collider is Cube: # && !picked_item
+	if collider is Cube and collider.pickable == true and Enable_Player_Movement: # && !picked_item
 		interact_text.visible = true
 		if Input.is_action_just_pressed("Interact_Key") and !(pick_up_slot.get_child(hotbar.current_index) is Cube):
 			PickedItem.emit(collider) # to abstract item
+			level.start_level = true
 	else:
 		interact_text.visible = false
 
 	# Dropping mech
-	if Input.is_action_just_pressed("Drop_Key"):
+	if Input.is_action_just_pressed("Drop_Key") and Enable_Player_Movement:
 		if pick_up_slot.get_child(hotbar.current_index) is Cube:
 			DroppedItem.emit()
 	if pick_up_slot.get_child(hotbar.current_index) is Cube:
@@ -443,6 +464,33 @@ func add_item(stats, skill):
 func drop_item(stats, skill):
 	hotbar.drop_item(stats, skill)
 
+func handle_level_timer():
+	if level.start_level == true:
+		timer_time.text = "%3.1f" % player_timer.time_left
+
+func win_condition():
+	if citizen_amount == 0:
+		var tween = level.create_tween()
+		tween.tween_property(level.win_screen, "modulate", Color("ffffff", 1), 1.0)
+		level.win_screen.visible = true
+		player_timer.stop()
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		set_physics_process(false)
+		set_process_input(false)
+
+func game_over():
+	var tween = create_tween()
+	tween.tween_property(win_screen, "modulate", Color("ffffff", 1), 1.0)
+	game_over_screen.visible = true
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	set_physics_process(false)
+	set_process_input(false)
+	#Enable_Player_Movement = false
+	#Enable_Jump = false
+	#Enable_Crouch = false
+	#is_walking = false
+	#velocity = Vector3.ZERO
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
@@ -457,3 +505,15 @@ func _input(event: InputEvent) -> void:
 					deg_to_rad(-Max_Look_Angle), 
 					deg_to_rad(Max_Look_Angle),
 					)
+
+
+func _on_player_timer_timeout() -> void:
+	game_over()
+
+
+func _on_restart_button_pressed() -> void:
+	get_tree().reload_current_scene()
+
+
+func _on_main_menu_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://addons/Basic UI/main_menu.tscn")

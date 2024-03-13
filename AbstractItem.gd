@@ -13,6 +13,7 @@ class_name Cube
 const EMPTY_SLOT = preload("res://scenes/empty_slot.tscn")
 @export var stats: Item
 @export var skill: Skill
+@export var pickable: bool = true
 
 func _ready() -> void:
 	if stats != null:
@@ -46,10 +47,3 @@ func _on_player_dropped_item() -> void:
 	var throw_vector := -head.global_transform.basis.z.normalized()
 	object.apply_central_impulse(throw_vector * 7.0 * clamp(player.velocity.length()/6.0,1,3) +\
 	Vector3(player.velocity.x / 4.0, player.velocity.y / 7.0 + 1.5, player.velocity.z / 4.0))
-	pass
-
-
-
-func _physics_process(delta: float) -> void:
-	#player.hand_collision_shape.global_transform = hand_item.collision.global_transform
-	pass
