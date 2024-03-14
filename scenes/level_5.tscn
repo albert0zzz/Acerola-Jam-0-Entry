@@ -1,0 +1,326 @@
+[gd_scene load_steps=21 format=3 uid="uid://ds242vukg2bqm"]
+
+[ext_resource type="Script" path="res://scenes/level.gd" id="1_0e2kv"]
+[ext_resource type="PackedScene" uid="uid://dnisxunjm7m2l" path="res://addons/Godot Modular FPC/player.tscn" id="2_yly34"]
+[ext_resource type="PackedScene" uid="uid://diimwq0v6n0u6" path="res://abstract_item.tscn" id="3_58jve"]
+[ext_resource type="Resource" uid="uid://b1wq7qg3l4uam" path="res://resources/items/basic_cube.tres" id="4_k6fbi"]
+[ext_resource type="Resource" uid="uid://bilpcjuhm6w78" path="res://resources/skills/no_skill.tres" id="5_oles5"]
+[ext_resource type="Resource" uid="uid://ct7ipxtfy8f60" path="res://resources/items/jump_cube.tres" id="6_gdjfk"]
+[ext_resource type="Resource" uid="uid://da6rkaci74vqh" path="res://resources/skills/jump_boost.tres" id="7_1j4ka"]
+[ext_resource type="Resource" uid="uid://cmjntr8pjex33" path="res://resources/items/dash_cube.tres" id="8_hgqjy"]
+[ext_resource type="Resource" uid="uid://2si8yo6j2raj" path="res://resources/skills/dash.tres" id="9_7v52v"]
+[ext_resource type="Resource" uid="uid://be4yxcb0201pm" path="res://resources/items/explosion_cube.tres" id="10_yem0j"]
+[ext_resource type="Resource" uid="uid://ci0pil4myy6bs" path="res://resources/skills/explosion_boost.tres" id="11_x1hhy"]
+[ext_resource type="PackedScene" uid="uid://blxmfbmq0ynfu" path="res://citizen.tscn" id="12_ffb11"]
+[ext_resource type="Script" path="res://scenes/win_screen.gd" id="13_g6be6"]
+[ext_resource type="PackedScene" uid="uid://co2yscvyhngyb" path="res://addons/Basic UI/pause_menu.tscn" id="14_81ylp"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i72wu"]
+sky_top_color = Color(0.0901961, 0.247059, 0.427451, 1)
+sky_horizon_color = Color(0.282353, 0.458824, 0.788235, 1)
+ground_bottom_color = Color(0.137255, 0.337255, 0.568627, 1)
+ground_horizon_color = Color(0.356863, 0.529412, 0.85098, 1)
+
+[sub_resource type="Sky" id="Sky_ytkpk"]
+sky_material = SubResource("ProceduralSkyMaterial_i72wu")
+
+[sub_resource type="Environment" id="Environment_wlyri"]
+background_mode = 2
+sky = SubResource("Sky_ytkpk")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nt7jw"]
+albedo_color = Color(0.262745, 0.262745, 0.262745, 1)
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0k278"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8cr7l"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="Level_5" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.164215, 0, 0.0961533)
+script = ExtResource("1_0e2kv")
+level_time = 50.0
+
+[node name="Player" parent="." instance=ExtResource("2_yly34")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.75607, -4.76837e-07, 0.0544543)
+Hitbox_Stand_Height = 1.8
+head_height = 1.6
+
+[node name="WhiteBox" parent="." instance=ExtResource("3_58jve")]
+transform = Transform3D(-0.509807, 0, -0.860289, 0, 1, 0, 0.860289, 0, -0.509807, -5.41078, 4.76837e-07, 8.14027)
+stats = ExtResource("4_k6fbi")
+skill = ExtResource("5_oles5")
+
+[node name="BlueBox" parent="." instance=ExtResource("3_58jve")]
+transform = Transform3D(-0.509807, 0, -0.860289, 0, 1, 0, 0.860289, 0, -0.509807, -5.14492, 2.98023e-07, 7.54757)
+stats = ExtResource("6_gdjfk")
+skill = ExtResource("7_1j4ka")
+
+[node name="GreenBox" parent="." instance=ExtResource("3_58jve")]
+transform = Transform3D(-0.973615, 0, 0.228198, 0, 1, 0, -0.228198, 0, -0.973615, -5.76757, 4.76837e-07, 7.4151)
+stats = ExtResource("8_hgqjy")
+skill = ExtResource("9_7v52v")
+
+[node name="RedBox" parent="." instance=ExtResource("3_58jve")]
+transform = Transform3D(-0.962706, 0, 0.27055, 0, 1, 0, -0.27055, 0, -0.962706, -5.37579, 0.580471, 7.74953)
+stats = ExtResource("10_yem0j")
+skill = ExtResource("11_x1hhy")
+
+[node name="Citizen" parent="." instance=ExtResource("12_ffb11")]
+transform = Transform3D(0.912848, 0, 0.408299, 0, 1, 0, -0.408299, 0, 0.912848, 6.42754, 58.8344, 85.5506)
+
+[node name="Citizen2" parent="." instance=ExtResource("12_ffb11")]
+transform = Transform3D(0.611182, 0, 0.79149, 0, 1, 0, -0.79149, 0, 0.611182, 10.4627, 58.6932, 45.6443)
+
+[node name="Citizen3" parent="." instance=ExtResource("12_ffb11")]
+transform = Transform3D(0.870725, 0, -0.491771, 0, 1, 0, 0.491771, 0, 0.870725, 7.70148, 29.1994, 127.297)
+
+[node name="Citizen4" parent="." instance=ExtResource("12_ffb11")]
+transform = Transform3D(0.611182, 0, 0.79149, 0, 1, 0, -0.79149, 0, 0.611182, -1.82762, 5.2643, 47.5683)
+
+[node name="Charlie" parent="." instance=ExtResource("12_ffb11")]
+transform = Transform3D(0.999041, 0, -0.0437583, 0, 1, 0, 0.0437583, 0, 0.999041, -16.1406, 31.4182, 109.217)
+
+[node name="10" type="Label3D" parent="Charlie"]
+transform = Transform3D(1.58149e-09, -0.0459706, -4.0479, -1.79025, -9.943e-08, 8.96467e-16, -7.82383e-08, 2.27423, -0.0818232, -0.406692, 0.596466, 0.062439)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(0, 0, 0, 0)
+text = ":)"
+font_size = 48
+
+[node name="Enviroment" type="Node" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Enviroment"]
+environment = SubResource("Environment_wlyri")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Enviroment"]
+transform = Transform3D(0.6658, 0.62799, -0.402913, 0.0131098, 0.530074, 0.84785, 0.746015, -0.56978, 0.34469, 0, 9.73683, 0)
+shadow_enabled = true
+directional_shadow_mode = 0
+directional_shadow_split_1 = 0.178
+directional_shadow_blend_splits = true
+
+[node name="Floor" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.62831, -0.5, 4.48097)
+use_collision = true
+collision_mask = 31
+size = Vector3(18.9357, 1, 19.9275)
+material = SubResource("StandardMaterial3D_nt7jw")
+
+[node name="Truck" type="Node" parent="Enviroment"]
+
+[node name="CSGBox3D26" type="CSGBox3D" parent="Enviroment/Truck"]
+transform = Transform3D(-2.07366, -0.364609, 0.711422, -0.265568, 2.84701, 0.09111, -0.541246, -6.28566e-09, -2.77035, -8.6719, 0.45264, 9.38745)
+use_collision = true
+size = Vector3(0.5, 0.5, 0.233398)
+material = SubResource("StandardMaterial3D_0k278")
+
+[node name="CSGBox3D27" type="CSGBox3D" parent="Enviroment/Truck"]
+transform = Transform3D(-2.07366, -0.364609, 0.711422, -0.265568, 2.84701, 0.09111, -0.541246, -6.28566e-09, -2.77035, -12.976, -0.0942918, 8.2652)
+use_collision = true
+size = Vector3(0.5, 0.5, 0.233398)
+material = SubResource("StandardMaterial3D_0k278")
+
+[node name="CSGBox3D28" type="CSGBox3D" parent="Enviroment/Truck"]
+transform = Transform3D(-2.07366, -0.364609, 0.711422, -0.265568, 2.84701, 0.09111, -0.541246, -6.28566e-09, -2.77035, -9.68355, 0.327362, 13.3225)
+use_collision = true
+size = Vector3(0.5, 0.5, 0.233398)
+material = SubResource("StandardMaterial3D_0k278")
+
+[node name="CSGBox3D29" type="CSGBox3D" parent="Enviroment/Truck"]
+transform = Transform3D(-2.07366, -0.364609, 0.711422, -0.265568, 2.84701, 0.09111, -0.541246, -6.28566e-09, -2.77035, -13.9863, -0.223686, 12.1994)
+use_collision = true
+size = Vector3(0.5, 0.5, 0.233398)
+material = SubResource("StandardMaterial3D_0k278")
+
+[node name="CSGBox3D30" type="CSGBox3D" parent="Enviroment/Truck"]
+transform = Transform3D(-2.07366, -0.364609, 0.711422, -0.265568, 2.84701, 0.09111, -0.541246, -6.28566e-09, -2.77035, -12.0373, 0.992153, 10.6606)
+use_collision = true
+size = Vector3(3.37811, 0.439331, 1.74414)
+
+[node name="CSGBox3D31" type="CSGBox3D" parent="Enviroment/Truck"]
+transform = Transform3D(-2.07366, -0.364609, 0.711422, -0.265568, 2.84701, 0.09111, -0.541246, -6.28566e-09, -2.77035, -11.518, 2.81737, 10.8539)
+use_collision = true
+size = Vector3(2.66367, 0.783722, 1.74414)
+
+[node name="8" type="Label3D" parent="Enviroment/Truck"]
+transform = Transform3D(-0.960239, -0.12703, 0.248602, -0.122975, 0.991899, 0.0318378, -0.250633, 5.87477e-09, -0.968082, -10.7529, 2.35082, 8.43515)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(0, 0, 0, 0)
+text = "CUBEX TRUCK"
+font_size = 158
+metadata/_edit_group_ = true
+
+[node name="9" type="Label3D" parent="Enviroment/Truck"]
+transform = Transform3D(0.960239, -0.12703, -0.248602, 0.122975, 0.991899, -0.0318378, 0.250633, 5.87477e-09, 0.968082, -12.0122, 2.18953, 13.3394)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(0, 0, 0, 0)
+text = "CUBEX TRUCK"
+font_size = 158
+metadata/_edit_group_ = true
+
+[node name="10" type="Label3D" parent="Enviroment/Truck"]
+transform = Transform3D(-0.248602, -0.12703, -0.960239, -0.0318378, 0.991899, -0.122975, 0.968082, 5.87477e-09, -0.250633, -15.5458, 0.514987, 9.76972)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(0, 0, 0, 0)
+text = "0                  0"
+font_size = 158
+metadata/_edit_group_ = true
+
+[node name="11" type="Label3D" parent="Enviroment/Truck"]
+transform = Transform3D(-0.248602, -0.12703, -0.960239, -0.0318378, 0.991899, -0.122975, 0.968082, 5.87477e-09, -0.250633, -15.5458, 0.514987, 9.76972)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(0, 0, 0, 0)
+text = "IIIIIIIIIIIII"
+font_size = 158
+metadata/_edit_group_ = true
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(-0.614285, 0, -0.789084, 0, 1, 0, 0.789084, 0, -0.614285, -1.27379, -5.86472, 48.5184)
+use_collision = true
+size = Vector3(10, 20, 10)
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, 6.9443, -5.86472, 89.87)
+use_collision = true
+size = Vector3(10, 20, 10)
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, 17.2221, -3.92867, 99.2179)
+use_collision = true
+size = Vector3(10, 26.0194, 10)
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, 27.511, 2.57819, 109.281)
+use_collision = true
+size = Vector3(10, 26.0194, 10)
+
+[node name="CSGBox3D12" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, 17.257, 0.41514, 119.801)
+use_collision = true
+size = Vector3(10, 43.3914, 10)
+
+[node name="CSGBox3D13" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, 6.02244, 1.95691, 128.927)
+use_collision = true
+size = Vector3(10, 52.1395, 10)
+
+[node name="CSGBox3D14" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, -4.72687, 21.1587, 118.482)
+use_collision = true
+size = Vector3(10, 26.0194, 10)
+
+[node name="CSGBox3D15" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, -15.185, 29.5343, 112.61)
+use_collision = true
+size = Vector3(2.07758, 26.0194, 10)
+
+[node name="CSGBox3D23" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, -11.7475, 29.5343, 108.63)
+use_collision = true
+size = Vector3(10, 26.0194, 3.08252)
+
+[node name="CSGBox3D22" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, -15.2247, 29.5343, 105.203)
+use_collision = true
+size = Vector3(3.10779, 26.0194, 10)
+
+[node name="CSGBox3D21" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, -15.2062, 23.2367, 108.649)
+use_collision = true
+size = Vector3(10, 13.4241, 10)
+
+[node name="CSGBox3D20" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, -15.2062, 38.0974, 108.649)
+use_collision = true
+size = Vector3(10, 8.89328, 10)
+
+[node name="CSGBox3D16" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, -4.24162, 38.5661, 98.9115)
+use_collision = true
+size = Vector3(10, 26.0194, 10)
+
+[node name="CSGBox3D17" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, 7.39376, 44.6493, 89.5353)
+use_collision = true
+size = Vector3(10, 26.0194, 10)
+
+[node name="CSGBox3D18" type="CSGBox3D" parent="Enviroment"]
+transform = Transform3D(0.00535828, 0, -0.999985, 0, 1, 0, 0.999985, 0, 0.00535828, 8.16638, 55.399, 39.8095)
+use_collision = true
+size = Vector3(15, 5, 10)
+
+[node name="Text" type="Node" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Text"]
+transform = Transform3D(-0.732424, 0, -0.680849, 0, 1, 0, 0.680849, 0, -0.732424, 1.29588, 1.58384, 5.55913)
+size = Vector3(7.86816, 1, 0.114258)
+material = SubResource("StandardMaterial3D_8cr7l")
+
+[node name="0" type="Label3D" parent="Text/CSGBox3D"]
+transform = Transform3D(1, 0, 2.98023e-08, 0, 1, 0, -2.98023e-08, 0, 1, 0.0969319, 0.0489619, 0.0586767)
+outline_modulate = Color(0, 0, 0, 0)
+text = "It's your final day! This time you'll be using everything you've learned.
+Once you're done, you'll get your reward."
+font_size = 48
+
+[node name="1" type="Label3D" parent="."]
+transform = Transform3D(0.00294992, 0, -0.999996, 0, 1, 0, 0.999996, 0, 0.00294992, -13.5333, 32.6095, 109.068)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(0, 0, 0, 0)
+text = "The fifth Charlie has been found! 
+Now you can rest"
+font_size = 48
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="WinScreen" type="Control" parent="CanvasLayer"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("13_g6be6")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/WinScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.580392)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/WinScreen/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -20.0
+offset_right = 48.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WinText" type="Label" parent="CanvasLayer/WinScreen/ColorRect/VBoxContainer"]
+layout_mode = 2
+text = "Good Job!"
+
+[node name="NextLevelButton" type="Button" parent="CanvasLayer/WinScreen/ColorRect/VBoxContainer"]
+layout_mode = 2
+text = "The End"
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("14_81ylp")]
+
+[connection signal="DroppedItem" from="Player" to="WhiteBox" method="_on_player_dropped_item"]
+[connection signal="PickedItem" from="Player" to="WhiteBox" method="_on_player_picked_item"]
+[connection signal="pressed" from="CanvasLayer/WinScreen/ColorRect/VBoxContainer/NextLevelButton" to="CanvasLayer/WinScreen" method="_on_next_level_button_pressed"]

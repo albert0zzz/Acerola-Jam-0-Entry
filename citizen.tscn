@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://blxmfbmq0ynfu"]
+[gd_scene load_steps=6 format=3 uid="uid://blxmfbmq0ynfu"]
 
 [ext_resource type="Script" path="res://scenes/Citizen.gd" id="1_utiv7"]
 [ext_resource type="AudioStream" uid="uid://c3077o6qdouo1" path="res://assets/sfx/pipe.wav" id="2_dt5wv"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4r1ai"]
+albedo_color = Color(0.619608, 0.619608, 0.619608, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_16dv5"]
+material = SubResource("StandardMaterial3D_4r1ai")
 size = Vector3(0.8, 1.8, 0.8)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_m4ooe"]

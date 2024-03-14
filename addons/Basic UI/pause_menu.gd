@@ -31,3 +31,8 @@ func _on_settings_button_pressed() -> void:
 func _on_main_menu_button_pressed() -> void:
 	_is_paused = false
 	get_tree().change_scene_to_file("res://addons/Basic UI/main_menu.tscn")
+
+
+func _on_restart_button_pressed() -> void:
+	_is_paused = false
+	get_tree().reload_current_scene()

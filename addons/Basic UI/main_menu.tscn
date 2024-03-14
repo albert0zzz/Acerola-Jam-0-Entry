@@ -1,18 +1,39 @@
-[gd_scene load_steps=2 format=3 uid="uid://bbvjcddu3c4k5"]
+[gd_scene load_steps=6 format=3 uid="uid://bbvjcddu3c4k5"]
 
 [ext_resource type="Script" path="res://addons/Basic UI/main_menu.gd" id="1_kh4a1"]
 
-[node name="MainMenu" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i72wu"]
+sky_top_color = Color(0.0901961, 0.247059, 0.427451, 1)
+sky_horizon_color = Color(0.282353, 0.458824, 0.788235, 1)
+ground_bottom_color = Color(0.137255, 0.337255, 0.568627, 1)
+ground_horizon_color = Color(0.356863, 0.529412, 0.85098, 1)
+
+[sub_resource type="Sky" id="Sky_ytkpk"]
+sky_material = SubResource("ProceduralSkyMaterial_i72wu")
+
+[sub_resource type="Environment" id="Environment_y27rm"]
+background_mode = 2
+sky = SubResource("Sky_ytkpk")
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_txlii"]
+albedo_color = Color(0.262745, 0.262745, 0.262745, 1)
+uv1_triplanar = true
+
+[node name="MainMenu" type="Node3D"]
 script = ExtResource("1_kh4a1")
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_y27rm")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.6658, 0.62799, -0.402913, 0.0131098, 0.530074, 0.84785, 0.746015, -0.56978, 0.34469, 0, 9.73683, 0)
+shadow_enabled = true
+directional_shadow_mode = 0
+directional_shadow_split_1 = 0.178
+directional_shadow_blend_splits = true
+
 [node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.05
 anchor_top = 0.05
@@ -30,10 +51,6 @@ layout_mode = 2
 focus_neighbor_top = NodePath("../ExitButton")
 text = "Play"
 
-[node name="SettingsButton" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Settings"
-
 [node name="CreditsButton" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Credits"
@@ -43,7 +60,28 @@ layout_mode = 2
 focus_neighbor_bottom = NodePath("../PlayButton")
 text = "Exit"
 
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.146052, 0)
+size = Vector3(1, 0.25, 1)
+material = SubResource("StandardMaterial3D_txlii")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2325, 0)
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="Marker3D" type="Marker3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="Marker3D"]
+transform = Transform3D(1, 0, 0, 0, 0.887904, 0.460029, 0, -0.460029, 0.887904, 0, 0.95813, 1.8472)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Credits" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/CreditsButton" to="." method="_on_credits_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

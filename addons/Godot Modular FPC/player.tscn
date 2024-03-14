@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dnisxunjm7m2l"]
+[gd_scene load_steps=14 format=3 uid="uid://dnisxunjm7m2l"]
 
 [ext_resource type="Script" path="res://addons/Godot Modular FPC/player.gd" id="1_o5wto"]
 [ext_resource type="Texture2D" uid="uid://wmhyom30iy62" path="res://addons/Godot Modular FPC/Crosshair.png" id="2_gaihr"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://cb6y31aurfk6s" path="res://slot.tscn" id="3_fhvxy"]
 [ext_resource type="Script" path="res://addons/Godot Modular FPC/Hotbar.gd" id="3_xtv58"]
 [ext_resource type="AudioStream" uid="uid://c0m500l0xsh8j" path="res://assets/sfx/footstep on concrete 4.wav" id="7_r7m3x"]
+[ext_resource type="AudioStream" uid="uid://d11qt8sddbn2f" path="res://assets/sfx/tada.wav" id="8_4xlvb"]
+[ext_resource type="AudioStream" uid="uid://cafvmgbmm0g3p" path="res://assets/sfx/game over.mp3" id="9_hdnvk"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wqptg"]
 
@@ -23,47 +25,11 @@ bg_color = Color(0.117647, 0.694118, 0.294118, 1)
 collision_layer = 2
 collision_mask = 19
 script = ExtResource("1_o5wto")
-Field_of_View = null
-Enable_Camera_Rotation = null
-Invert_Camera_Rotation = null
-Look_Sensitivity = null
-Max_Look_Angle = null
-Lock_and_Hide_Cursor = null
-Auto_Crosshair = null
-Crosshair_Image = null
-Crosshair_Color = null
-Enable_Zoom = null
-Hold_to_Zoom = null
-Zoom_FOV = null
-Zoom_FOV_Step_Time = null
-Enable_Player_Movement = null
 Walk_Speed = 7.0
-Enable_Sprint = null
 Unlimited_Sprint = true
 Sprint_Speed = 11.0
-Sprint_Duration = null
-Sprint_Cooldown = null
-Sprint_FOV = null
-Sprint_FOV_Step_Time = null
-Use_Sprint_Bar = null
-Hide_Full_Bar = null
-Bar_BG_Color = null
-Bar_Color = null
-Bar_Width = null
-Bar_Height = null
-Enable_Jump = null
 Jump_Power = 6.0
-Enable_Crouch = null
-Hold_to_Crouch = null
-Crouch_Depth = null
-Crouch_Speed = null
-Enable_Head_Bob = null
-Bob_Speed = null
-Bob_Amount = null
 throw_power = 7.0
-Hitbox_Stand_Height = null
-Hitbox_Crouch_Height = null
-head_height = null
 
 [node name="StandCollisionShape" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -173,7 +139,7 @@ offset_right = 55.5
 offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "Press LBM to pick up"
+text = "Press LMB to pick up"
 
 [node name="DropText" type="Label" parent="Control"]
 visible = false
@@ -218,7 +184,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="JumpBoostCooldown" type="Timer" parent="."]
-wait_time = 3.7
+wait_time = 2.0
 one_shot = true
 
 [node name="DashCooldown" type="Timer" parent="."]
@@ -226,7 +192,7 @@ wait_time = 1.813
 one_shot = true
 
 [node name="ExplosionCooldown" type="Timer" parent="."]
-wait_time = 1.52
+wait_time = 2.311
 one_shot = true
 
 [node name="PlayerTimer" type="Timer" parent="."]
@@ -236,6 +202,13 @@ one_shot = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.315632, 0)
 stream = ExtResource("7_r7m3x")
 volume_db = -17.615
+
+[node name="WinPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_4xlvb")
+
+[node name="GameOverPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_hdnvk")
+volume_db = -11.45
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

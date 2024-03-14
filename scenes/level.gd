@@ -5,11 +5,8 @@ extends Node3D
 @onready var timer_time: Label = $Player/Control/MarginContainer/TimerTime
 @onready var win_screen: Control = $CanvasLayer/WinScreen
 
-
 @export var level_time: float = 60.0
-@export var citizen_amount: int = 2
-
-signal LevelComplete()
+@export var citizen_amount: int = 4
 
 var start_level: bool = false
 

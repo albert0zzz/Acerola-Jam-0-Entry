@@ -128,6 +128,8 @@ signal TimerSend(time: float)
 @onready var player_timer: Timer = $PlayerTimer
 @onready var footstep_player: AudioStreamPlayer3D = $FootstepPlayer
 @onready var game_over_screen: Control = $CanvasLayer/GameOverScreen
+@onready var win_player: AudioStreamPlayer = $WinPlayer
+@onready var game_over_player: AudioStreamPlayer = $GameOverPlayer
 
 
 var citizen_amount: int = 0
@@ -191,6 +193,7 @@ func _physics_process(delta: float) -> void:
 	apply_gravity(delta)
 	handle_level_timer()
 	handle_footsteps(input_dir)
+	falling_in_depth()
 	win_condition()
 	move_and_slide()
 
@@ -357,7 +360,6 @@ func handle_movement(input_dir: Vector2, delta: float) -> void:
 			#velocity.x = direction.x * cur_speed
 			#velocity.z = direction.z * cur_speed
 		if explosion_used == true:
-			print_debug(explosion_dir)
 			velocity.z = explosion_dir.z * 12 + direction.z * 10
 			velocity.x = explosion_dir.x * 12 + direction.x * 10
 		#if direction:
@@ -371,7 +373,7 @@ func handle_movement(input_dir: Vector2, delta: float) -> void:
 			if pick_up_slot.get_child(hotbar.current_index).skill != null:
 				#print("bruh")
 				if pick_up_slot.get_child(hotbar.current_index).skill.name == "Jump Boost" and jump_boost_cooldown.time_left == 0:
-					print("Jump Boost")
+					#print("Jump Boost")
 					jump_boost_used = true
 					dash_used = false
 					explosion_used = false
@@ -379,7 +381,7 @@ func handle_movement(input_dir: Vector2, delta: float) -> void:
 					jump_boost_cooldown.start()
 					TimerSend.emit(jump_boost_cooldown.wait_time)
 				if pick_up_slot.get_child(hotbar.current_index).skill.name == "Dash" and dash_cooldown.time_left == 0: 
-					print("Dash")
+					#print("Dash")
 					#var dash_vec = -head.global_transform.basis.z
 					velocity.y = 3
 					dash_used = true
@@ -390,7 +392,7 @@ func handle_movement(input_dir: Vector2, delta: float) -> void:
 					dash_cooldown.start()
 					TimerSend.emit(dash_cooldown.wait_time)
 				if pick_up_slot.get_child(hotbar.current_index).skill.name == "Explosion Boost" and explosion_cooldown.time_left == 0:
-					print("Explosion Boost")
+					#print("Explosion Boost")
 					explosion_dir = head.global_transform.basis.z.normalized()
 					dash_dir = Vector3.ZERO
 					velocity.y = explosion_dir.y * 10 + 1
@@ -400,8 +402,8 @@ func handle_movement(input_dir: Vector2, delta: float) -> void:
 					explosion_cooldown.start()
 					TimerSend.emit(explosion_cooldown.wait_time)
 				if pick_up_slot.get_child(hotbar.current_index).skill.name == "No Skill":
-					print("No Skill")
-					print(pick_up_slot.get_child(hotbar.current_index).pickable)
+					#print("No Skill")
+					pass
 	
 	if Enable_Player_Movement:
 		if input_dir != Vector2.ZERO && is_on_floor():
@@ -433,7 +435,11 @@ func apply_friction(input_dir: Vector2, delta: float):
 			velocity.x = lerp(velocity.x, 0.0, 10 * delta)
 			velocity.z = lerp(velocity.z, 0.0, 10 * delta)
 		pass
-	
+
+func falling_in_depth():
+	if position.y < -50:
+		game_over()
+		
 
 func handle_pick_n_drop():
 	var collider = ray_hit.get_collider()
@@ -474,18 +480,20 @@ func win_condition():
 		tween.tween_property(level.win_screen, "modulate", Color("ffffff", 1), 1.0)
 		level.win_screen.visible = true
 		player_timer.stop()
+		win_player.play()
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		set_physics_process(false)
 		set_process_input(false)
 
 func game_over():
 	var tween = create_tween()
-	tween.tween_property(win_screen, "modulate", Color("ffffff", 1), 1.0)
+	tween.tween_property(game_over_screen, "modulate", Color("ffffff", 1), 1.0)
 	game_over_screen.visible = true
+	game_over_player.play()
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	set_physics_process(false)
 	set_process_input(false)
-	#Enable_Player_Movement = false
+	Enable_Player_Movement = false
 	#Enable_Jump = false
 	#Enable_Crouch = false
 	#is_walking = false
