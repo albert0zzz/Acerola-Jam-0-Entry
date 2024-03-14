@@ -12,14 +12,14 @@
 [ext_resource type="PackedScene" uid="uid://dp1pr7j5mevcy" path="res://scenes/win_screen.tscn" id="13_gtwyo"]
 [ext_resource type="PackedScene" uid="uid://co2yscvyhngyb" path="res://addons/Basic UI/pause_menu.tscn" id="14_d0buu"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i72wu"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_66h5r"]
 sky_top_color = Color(0.0901961, 0.247059, 0.427451, 1)
 sky_horizon_color = Color(0.282353, 0.458824, 0.788235, 1)
 ground_bottom_color = Color(0.137255, 0.337255, 0.568627, 1)
 ground_horizon_color = Color(0.356863, 0.529412, 0.85098, 1)
 
 [sub_resource type="Sky" id="Sky_ytkpk"]
-sky_material = SubResource("ProceduralSkyMaterial_i72wu")
+sky_material = SubResource("ProceduralSkyMaterial_66h5r")
 
 [sub_resource type="Environment" id="Environment_slj4v"]
 background_mode = 2

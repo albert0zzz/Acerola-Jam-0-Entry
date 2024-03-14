@@ -16,14 +16,14 @@
 [ext_resource type="PackedScene" uid="uid://bpntgjcuuy74u" path="res://scenes/level_4.tscn" id="14_cfp71"]
 [ext_resource type="PackedScene" uid="uid://co2yscvyhngyb" path="res://addons/Basic UI/pause_menu.tscn" id="14_e0f5d"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i72wu"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_66h5r"]
 sky_top_color = Color(0.0901961, 0.247059, 0.427451, 1)
 sky_horizon_color = Color(0.282353, 0.458824, 0.788235, 1)
 ground_bottom_color = Color(0.137255, 0.337255, 0.568627, 1)
 ground_horizon_color = Color(0.356863, 0.529412, 0.85098, 1)
 
 [sub_resource type="Sky" id="Sky_ytkpk"]
-sky_material = SubResource("ProceduralSkyMaterial_i72wu")
+sky_material = SubResource("ProceduralSkyMaterial_66h5r")
 
 [sub_resource type="Environment" id="Environment_wlyri"]
 background_mode = 2
@@ -42,7 +42,7 @@ albedo_color = Color(0, 0, 0, 1)
 
 [node name="Level_3" type="Node3D"]
 script = ExtResource("1_2jndo")
-level_time = 70.0
+level_time = 40.0
 
 [node name="Player" parent="." instance=ExtResource("2_8ctoy")]
 Hitbox_Stand_Height = 1.8
@@ -302,6 +302,7 @@ font_size = 48
 Next_level = ExtResource("14_cfp71")
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("14_e0f5d")]
+visible = false
 
 [connection signal="DroppedItem" from="Player" to="WhiteBox" method="_on_player_dropped_item"]
 [connection signal="PickedItem" from="Player" to="WhiteBox" method="_on_player_picked_item"]

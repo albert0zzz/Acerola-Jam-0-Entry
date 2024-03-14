@@ -13,7 +13,9 @@ config_version=5
 config/name="Cube Distribution System"
 run/main_scene="res://addons/Basic UI/main_menu.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/show_image=false
+config/icon="res://assets/textures/Sprite-0001.png"
 
 [autoload]
 
@@ -120,3 +122,4 @@ Fourth_Slot={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+anti_aliasing/quality/msaa_3d=1

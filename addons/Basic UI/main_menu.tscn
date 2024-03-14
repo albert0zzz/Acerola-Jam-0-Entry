@@ -8,12 +8,12 @@ sky_horizon_color = Color(0.282353, 0.458824, 0.788235, 1)
 ground_bottom_color = Color(0.137255, 0.337255, 0.568627, 1)
 ground_horizon_color = Color(0.356863, 0.529412, 0.85098, 1)
 
-[sub_resource type="Sky" id="Sky_ytkpk"]
+[sub_resource type="Sky" id="Sky_nwrnh"]
 sky_material = SubResource("ProceduralSkyMaterial_i72wu")
 
 [sub_resource type="Environment" id="Environment_y27rm"]
 background_mode = 2
-sky = SubResource("Sky_ytkpk")
+sky = SubResource("Sky_nwrnh")
 tonemap_mode = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_txlii"]
@@ -33,12 +33,30 @@ directional_shadow_mode = 0
 directional_shadow_split_1 = 0.178
 directional_shadow_blend_splits = true
 
+[node name="Label2" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 1152.0
+grow_vertical = 0
+size_flags_vertical = 8
+text = "jam version 1.0"
+vertical_alignment = 2
+
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = -1
 anchor_left = 0.05
-anchor_top = 0.05
+anchor_top = 0.108
 anchor_right = 0.95
 anchor_bottom = 0.95
+
+[node name="Label" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 76
+text = "CUBE DISTRIBITION SYSTEM"
+horizontal_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 custom_minimum_size = Vector2(150, 0)
@@ -50,10 +68,6 @@ size_flags_vertical = 8
 layout_mode = 2
 focus_neighbor_top = NodePath("../ExitButton")
 text = "Play"
-
-[node name="CreditsButton" type="Button" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Credits"
 
 [node name="ExitButton" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -74,14 +88,5 @@ size = Vector3(0.5, 0.5, 0.5)
 [node name="Camera3D" type="Camera3D" parent="Marker3D"]
 transform = Transform3D(1, 0, 0, 0, 0.887904, 0.460029, 0, -0.460029, 0.887904, 0, 0.95813, 1.8472)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Credits" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
 [connection signal="pressed" from="MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/CreditsButton" to="." method="_on_credits_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

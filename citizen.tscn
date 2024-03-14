@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://blxmfbmq0ynfu"]
 
 [ext_resource type="Script" path="res://scenes/Citizen.gd" id="1_utiv7"]
-[ext_resource type="AudioStream" uid="uid://c3077o6qdouo1" path="res://assets/sfx/pipe.wav" id="2_dt5wv"]
+[ext_resource type="AudioStream" uid="uid://qbjiaatwb1as" path="res://assets/sfx/punch.wav" id="2_uxsjc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4r1ai"]
 albedo_color = Color(0.619608, 0.619608, 0.619608, 1)
@@ -29,6 +29,7 @@ mesh = SubResource("BoxMesh_16dv5")
 shape = SubResource("BoxShape3D_m4ooe")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("2_dt5wv")
+stream = ExtResource("2_uxsjc")
+volume_db = -13.981
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
