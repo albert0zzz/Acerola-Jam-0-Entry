@@ -55,7 +55,7 @@ anchor_bottom = 0.95
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 76
-text = "CUBE DISTRIBITION SYSTEM"
+text = "CUBE DISTRIBUTION SYSTEM"
 horizontal_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
