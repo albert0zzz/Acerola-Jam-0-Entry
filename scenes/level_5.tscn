@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://ds242vukg2bqm"]
+[gd_scene load_steps=22 format=3 uid="uid://ds242vukg2bqm"]
 
 [ext_resource type="Script" path="res://scenes/level.gd" id="1_0e2kv"]
 [ext_resource type="PackedScene" uid="uid://dnisxunjm7m2l" path="res://addons/Godot Modular FPC/player.tscn" id="2_yly34"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://blxmfbmq0ynfu" path="res://citizen.tscn" id="12_ffb11"]
 [ext_resource type="Script" path="res://scenes/win_screen.gd" id="13_g6be6"]
 [ext_resource type="PackedScene" uid="uid://co2yscvyhngyb" path="res://addons/Basic UI/pause_menu.tscn" id="14_81ylp"]
+[ext_resource type="PackedScene" uid="uid://dcwajpwe2iivb" path="res://scenes/the_end.tscn" id="14_g1npq"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i72wu"]
 sky_top_color = Color(0.0901961, 0.247059, 0.427451, 1)
@@ -287,6 +288,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("13_g6be6")
+Next_level = ExtResource("14_g1npq")
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/WinScreen"]
 layout_mode = 1

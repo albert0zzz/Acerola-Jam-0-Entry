@@ -462,7 +462,6 @@ font_size = 48
 Next_level = ExtResource("14_hef00")
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("2_xtyyw")]
-visible = false
 
 [connection signal="DroppedItem" from="Player" to="WhiteBox" method="_on_player_dropped_item"]
 [connection signal="PickedItem" from="Player" to="WhiteBox" method="_on_player_picked_item"]
